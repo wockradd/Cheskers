@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Pawn extends Piece{
 
@@ -13,18 +14,19 @@ public class Pawn extends Piece{
 
 	@Override
 	void generateMoveList() {
+		moves.clear();
 		mustMove = false;
 
 		//check if we have to move
 		try {
-			if(!b.getSquares()[x+1][y-1].getPiece().getMine()) {
+			if(!b.getSquares()[x+1][y-1].getPiece().getMine() && b.getSquares()[x+2][y-2].getEmpty()) {
 				mustMove = true;
 			}
 		}catch(ArrayIndexOutOfBoundsException aioobe) {}
 		catch(NullPointerException npe) {}
 		
 		try {
-			if(!b.getSquares()[x-1][y-1].getPiece().getMine()) {
+			if(!b.getSquares()[x-1][y-1].getPiece().getMine() && b.getSquares()[x-2][y-2].getEmpty()) {
 				mustMove = true;
 			}
 		}catch(ArrayIndexOutOfBoundsException aioobe) {}
@@ -48,7 +50,19 @@ public class Pawn extends Piece{
 		
 //		//hoping and capturing
 		if(mustMove) {
-			System.out.println("hi");
+			try {
+				if(!b.getSquares()[x-1][y-1].getPiece().getMine() && b.getSquares()[x-2][y-2].getEmpty()) {
+					moves.add(new Move(x,y,x-2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x-1][y-1].getPiece()))));
+				}
+			}catch(ArrayIndexOutOfBoundsException aioobe) {}
+			catch(NullPointerException npe) {}
+			
+			try {
+				if(!b.getSquares()[x+1][y-1].getPiece().getMine() && b.getSquares()[x+2][y-2].getEmpty()) {
+					moves.add(new Move(x,y,x+2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x+1][y-1].getPiece()))));
+				}
+			}catch(ArrayIndexOutOfBoundsException aioobe) {}
+			catch(NullPointerException npe) {}
 		}
 	}
 }

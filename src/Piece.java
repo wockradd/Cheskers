@@ -29,7 +29,7 @@ public abstract class Piece {
 		return mine;
 	}
 	
-	boolean canMove() {
+	public boolean canMove() {
 		return moves.size() > 0;
 	}
 }

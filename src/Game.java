@@ -4,22 +4,35 @@ public class Game {
 	public static void main(String[] args) {
 		Player player1 = new Player();
 		Player player2 = new Player();
+		int round = 1;
 		
-		//so we have seem kind of gui
-		player1.getBoard().printBoard();
-		
-		//just generates the list of moves for now
-		player1.makeMove();
-		
-		for(int j=0 ; j<8 ; j++) {
-			for(int i=0 ; i<8 ; i++) {
-				try {
-					for(int k=0 ; k<player1.board.getSquares()[i][j].getPiece().getMoveList().size() ; k++) {
-						System.out.println(player1.board.getSquares()[i][j].getPiece());
-						player1.board.getSquares()[i][j].getPiece().getMoveList().get(k).printMove();
-					}	
-				}catch(NullPointerException npe) {}
+		while(true) {
+			if(player1.hasLost()) {
+				System.out.println("player 1 loses");
+				break;
 			}
+			System.out.println("\n\n\n\n\n\n\n\nTurn num: " + round);
+			System.out.println("PLAYER 1");
+			player1.getBoard().printBoard();
+			player1.generateMoves();
+			player1.makeMove();
+			player1.getBoard().printBoard();
+			player2.setBoard(player1.board.flipBoard());
+			
+			
+			if(player2.hasLost()) {
+				System.out.println("player 2 loses");
+				break;
+			}
+			System.out.println("\nPLAYER 2");
+			player2.getBoard().printBoard();
+			player2.hasLost();
+			player2.generateMoves();
+			player2.makeMove();
+			player2.getBoard().printBoard();
+			player1.setBoard(player2.board.flipBoard());
+			
+			round++;
 		}
 	}
 }

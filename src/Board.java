@@ -1,15 +1,15 @@
 
-public class Board {
+public class Board implements Cloneable{
 	private Square[][] squares;
 	
-	public Board() {
+	public Board(boolean empty) {
 		squares = new Square[8][8];
 		initSquares();
-		setupPieces();
+		if(!empty)	setupPieces();
 	}
 	
 
-	
+	//sets up the board (without pieces)
 	public void initSquares() {
 		for(int j=0 ; j<8 ; j++) {
 			for(int i=0 ; i<8 ; i++) {
@@ -22,73 +22,94 @@ public class Board {
 		}
 	}
 	
-	
+
+	//add all the pieces to the board
 	public void setupPieces() {
-//		knight and bishop test set, empty, outofbounds, friendly piece, enemy piece moves all tested 
-		addPiece(1, 3, 'b', true);
-		addPiece(3, 5, 'n', true);
-		addPiece(4, 2, 'p', true);
-		addPiece(4, 2, 'p', true);
-		addPiece(3, 1, 'p', false);
-		addPiece(6, 4, 'p', false);
+		//knight and bishop test set, empty, outofbounds, friendly piece, enemy piece moves all tested 
+//		addPiece(1, 3, Piece.Type.Bishop, true);
+//		addPiece(3, 5, Piece.Type.Knight, true);
+//		//addPiece(4, 2, Piece.Type.King, true);
+//		addPiece(3, 1, Piece.Type.Pawn, false);
+//		addPiece(5, 1, Piece.Type.Pawn, false);
+//		addPiece(5, 3, Piece.Type.Pawn, false);
+//		addPiece(3, 3, Piece.Type.Pawn, false);
+//		addPiece(6, 4, Piece.Type.Pawn, false);
 		
 		
 		
 		//this players set up
-//		addPiece(0, 5, 'p', true);
-//		addPiece(1, 6, 'p', true);
-//		addPiece(2, 5, 'p', true);
-//		addPiece(3, 6, 'p', true);
-//		addPiece(4, 5, 'p', true);
-//		addPiece(5, 6, 'p', true);
-//		addPiece(6, 5, 'p', true);
-//		addPiece(7, 6, 'p', true);
-//		addPiece(0, 7, 'b', true);
-//		addPiece(2, 7, 'k', true);
-//		addPiece(4, 7, 'k', true);
-//		addPiece(6, 7, 'n', true);
+		addPiece(0, 5, Piece.Type.Pawn, true);
+		addPiece(1, 6, Piece.Type.Pawn, true);
+		addPiece(2, 5, Piece.Type.Pawn, true);
+		addPiece(3, 6, Piece.Type.Pawn, true);
+		addPiece(4, 5, Piece.Type.Pawn, true);
+		addPiece(5, 6, Piece.Type.Pawn, true);
+		addPiece(6, 5, Piece.Type.Pawn, true);
+		addPiece(7, 6, Piece.Type.Pawn, true);
+		addPiece(0, 7, Piece.Type.Bishop, true);
+		addPiece(2, 7, Piece.Type.King, true);
+		addPiece(4, 7, Piece.Type.King, true);
+		addPiece(6, 7, Piece.Type.Knight, true);
 	
 	
 		
 		//other players set up
-//		addPiece(0, 1, 'p', false);
-//		addPiece(1, 2, 'p', false);
-//		addPiece(2, 1, 'p', false);
-//		addPiece(3, 2, 'p', false);
-//		addPiece(4, 1, 'p', false);
-//		addPiece(5, 2, 'p', false);
-//		addPiece(6, 1, 'p', false);
-//		addPiece(7, 2, 'p', false);
-//		addPiece(7, 0, 'b', false);
-//		addPiece(5, 0, 'k', false);
-//		addPiece(3, 0, 'k', false);
-//		addPiece(1, 0, 'n', false);
+		addPiece(0, 1, Piece.Type.Pawn, false);
+		addPiece(1, 2, Piece.Type.Pawn, false);
+		addPiece(2, 1, Piece.Type.Pawn, false);
+		addPiece(3, 2, Piece.Type.Pawn, false);
+		addPiece(4, 1, Piece.Type.Pawn, false);
+		addPiece(5, 2, Piece.Type.Pawn, false);
+		addPiece(6, 1, Piece.Type.Pawn, false);
+		addPiece(7, 2, Piece.Type.Pawn, false);
+		addPiece(7, 0, Piece.Type.Bishop, false);
+		addPiece(5, 0, Piece.Type.King, false);
+		addPiece(3, 0, Piece.Type.King, false);
+		addPiece(1, 0, Piece.Type.Knight, false);
 	}
 	
-	public void addPiece(int i, int j, char type, boolean mine) {
+	
+	//add an individual piece to the board 
+	public void addPiece(int i, int j, Piece.Type type, boolean mine) {
 		switch(type) {
-			case 'p':
+			case Pawn:
 				squares[i][j].setPiece(new Pawn(this,mine,i,j));
 				break;
-			case 'n':
+			case Knight:
 				squares[i][j].setPiece(new Knight(this,mine,i,j));
 				break;
-			case 'b':
+			case Bishop:
 				squares[i][j].setPiece(new Bishop(this,mine,i,j));
 				break;
-			case 'k':
+			case King:
 				squares[i][j].setPiece(new King(this,mine,i,j));
 				break;
 		}
 	}
-	
+
+
+	//getter
 	public Square[][] getSquares() {
 		return squares;
 	}
 	
+	//rotates the board for the opponent player
+	public Board flipBoard() {
+		Board flippedBoard = new Board(true);
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				if(!squares[i][j].getEmpty()) {
+					Piece p = squares[i][j].getPiece();
+					flippedBoard.addPiece(7-i, 7-j, p.type, !p.getMine());  
+				}
+			}
+		}
+		return flippedBoard;
+	}
 	
 	
 	
+	//so we have some form of ui
 	public void printBoard() {
 		System.out.println("  0 1 2 3 4 5 6 7");
 		for(int j=0 ; j<8 ; j++) {
@@ -129,15 +150,17 @@ public class Board {
 			}
 			System.out.println();
 		}
-		System.out.println();
-		for(int j=0 ; j<8 ; j++) {
-			for(int i=0 ; i<8 ; i++) {
-				if(squares[i][j].getPiece() != null) {
-					System.out.println(squares[i][j].getPiece() + " at " + i + "," + j);
-				}
-				
-			}
-		}
+		
+		//print the names and positions of each piece, useful for debugging
+//		System.out.println();
+//		for(int j=0 ; j<8 ; j++) {
+//			for(int i=0 ; i<8 ; i++) {
+//				if(squares[i][j].getPiece() != null) {
+//					System.out.println(squares[i][j].getPiece() + " at " + i + "," + j);
+//				}
+//				
+//			}
+//		}
 		System.out.println();
 	}
 }
