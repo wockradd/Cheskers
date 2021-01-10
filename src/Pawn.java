@@ -37,12 +37,26 @@ public class Pawn extends Piece{
 		if(!mustMove) {
 			try {
 				if(b.getSquares()[x+1][y-1].getEmpty()) {
-					moves.add(new Move(x,y,x+1,y-1,null));
+					if(y-1 == 0) {
+						moves.add(new Move(x,y,x+1,y-1,null,Piece.Type.Bishop));
+						moves.add(new Move(x,y,x+1,y-1,null,Piece.Type.King));
+						moves.add(new Move(x,y,x+1,y-1,null,Piece.Type.Knight));
+					}else {
+						moves.add(new Move(x,y,x+1,y-1,null));
+					}
+					
 				}
 			}catch(ArrayIndexOutOfBoundsException aioobe) {}
 			try {
 				if(b.getSquares()[x-1][y-1].getEmpty()) {
-					moves.add(new Move(x,y,x-1,y-1,null));
+					if(y-1 == 0) {
+						moves.add(new Move(x,y,x-1,y-1,null,Piece.Type.Bishop));
+						moves.add(new Move(x,y,x-1,y-1,null,Piece.Type.King));
+						moves.add(new Move(x,y,x-1,y-1,null,Piece.Type.Knight));
+					}else {
+						moves.add(new Move(x,y,x-1,y-1,null));
+					}
+					
 				}
 			}catch(ArrayIndexOutOfBoundsException aioobe) {}
 		}
@@ -52,14 +66,26 @@ public class Pawn extends Piece{
 		if(mustMove) {
 			try {
 				if(!b.getSquares()[x-1][y-1].getPiece().getMine() && b.getSquares()[x-2][y-2].getEmpty()) {
-					moves.add(new Move(x,y,x-2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x-1][y-1].getPiece()))));
+					if(y-2 == 0) {
+						moves.add(new Move(x,y,x-2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x-1][y-1].getPiece())),Piece.Type.Bishop));
+						moves.add(new Move(x,y,x-2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x-1][y-1].getPiece())),Piece.Type.King));
+						moves.add(new Move(x,y,x-2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x-1][y-1].getPiece())),Piece.Type.Knight));
+					}else {
+						moves.add(new Move(x,y,x-2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x-1][y-1].getPiece()))));
+					}
 				}
 			}catch(ArrayIndexOutOfBoundsException aioobe) {}
 			catch(NullPointerException npe) {}
 			
 			try {
 				if(!b.getSquares()[x+1][y-1].getPiece().getMine() && b.getSquares()[x+2][y-2].getEmpty()) {
-					moves.add(new Move(x,y,x+2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x+1][y-1].getPiece()))));
+					if(y-2 == 0) {
+						moves.add(new Move(x,y,x+2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x+1][y-1].getPiece())),Piece.Type.Bishop));
+						moves.add(new Move(x,y,x+2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x+1][y-1].getPiece())),Piece.Type.King));
+						moves.add(new Move(x,y,x+2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x+1][y-1].getPiece())),Piece.Type.Knight));
+					}else {
+						moves.add(new Move(x,y,x+2,y-2,new ArrayList<Piece>(Arrays.asList(b.getSquares()[x+1][y-1].getPiece()))));		
+					}
 				}
 			}catch(ArrayIndexOutOfBoundsException aioobe) {}
 			catch(NullPointerException npe) {}

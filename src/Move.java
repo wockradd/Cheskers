@@ -3,12 +3,25 @@ import java.util.ArrayList;
 public class Move {
 	int fromI,fromJ,toI,toJ;
 	ArrayList<Piece> taking;
+	Piece.Type promoteTo;
 	
 	public Move(int fromI,int fromJ,int toI,int toJ, ArrayList<Piece> taking) {
 		this.fromI = fromI;
 		this.fromJ = fromJ;
 		this.toI = toI;
 		this.toJ = toJ;
+		this.promoteTo = null;
+		
+		this.taking = new ArrayList<Piece>();
+		this.taking = taking;
+	}
+	
+	public Move(int fromI,int fromJ,int toI,int toJ, ArrayList<Piece> taking, Piece.Type type) {
+		this.fromI = fromI;
+		this.fromJ = fromJ;
+		this.toI = toI;
+		this.toJ = toJ;
+		this.promoteTo = type;
 		
 		this.taking = new ArrayList<Piece>();
 		this.taking = taking;
@@ -17,7 +30,12 @@ public class Move {
 	
 	public void printMove() {
 		System.out.println(fromI + "," + fromJ + " to " + toI + "," + toJ);
-		System.out.println("Taking: " + taking + "\n");
+		System.out.println("Taking: " + taking );
+		if(promoteTo != null) {
+			System.out.println("Promoting too: " + promoteTo + "\n");
+		}else {
+			System.out.println("\n");
+		}
 	}
 
 }

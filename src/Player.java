@@ -44,48 +44,28 @@ public class Player {
 	
 	
 	public void generateMoves() {
+		ArrayList<Piece> mandatoryCaptures = new ArrayList<Piece>();
+		ArrayList<Move> moves =  new ArrayList<Move>();
 		
-		//look through pawn and king moves
 		for(int j=0 ; j<8 ; j++) {
 			for(int i=0 ; i<8 ; i++) {
 				try {
 					if(board.getSquares()[i][j].getPiece().getMine()) {
-						if(board.getSquares()[i][j].getPiece().type == Piece.Type.Pawn || board.getSquares()[i][j].getPiece().type == Piece.Type.King) {
-							board.getSquares()[i][j].getPiece().generateMoveList();
-							if(board.getSquares()[i][j].getPiece().mustMove) {
-								mandatoryMoveFound = true;
-								
+						board.getSquares()[i][j].getPiece().generateMoveList();
+						
+						if(board.getSquares()[i][j].getPiece().mustMove) {
+							for(Move m: board.getSquares()[i][j].getPiece().moves) {
+								mandatoryCaptures.add(m.taking.get(0));
 							}
+							mandatoryMoveFound = true;
 						}
+
 					}
 				}catch(NullPointerException npe) {}
 			}
 		}
-		
-		//look through knight and bishop moves only if theres not a mandatory pawn or king move
-		if(!mandatoryMoveFound) {
-			for(int j=0 ; j<8 ; j++) {
-				for(int i=0 ; i<8 ; i++) {
-					try {
-						if(board.getSquares()[i][j].getPiece().getMine()) {
-							if(board.getSquares()[i][j].getPiece().type == Piece.Type.Knight || board.getSquares()[i][j].getPiece().type == Piece.Type.Bishop) {
-								board.getSquares()[i][j].getPiece().generateMoveList();
-							}
-						}
-					}catch(NullPointerException npe) {}
-				}
-			}
-		}
-	}
-	
-	
-	
-	
-	
-	public void makeMove() {
-		ArrayList<Move> moves =  new ArrayList<Move>();
 
-		//add all the possible moves to the move list
+		//add all the possible moves found to the move list
 		for(int j=0 ; j<8 ; j++) {
 			for(int i=0 ; i<8 ; i++) {
 				try {
@@ -96,23 +76,34 @@ public class Player {
 			}
 		}
 
-		//remove all moves that dont capture pieces
+		//remove all moves that dont capture pieces if you found a mandatory move
 		if(mandatoryMoveFound) {
 			System.out.println("mandatory move");
+			System.out.println(moves.size());
 			for(int i=0 ; i<moves.size() ; i++) {
-				if(moves.get(i).taking == null) {
+				try {
+					if(!mandatoryCaptures.contains(moves.get(i).taking.get(0))) {
+						System.out.println("Removing");
+						moves.get(i).printMove();
+						moves.remove(i);
+						i--;
+					}else {
+						System.out.println("all good");
+						moves.get(i).printMove();
+					}
+				}catch(NullPointerException npe) {
 					System.out.println("Removing");
 					moves.get(i).printMove();
 					moves.remove(i);
 					i--;
-				}else {
-					System.out.println("all good");
-					moves.get(i).printMove();
 				}
+				
 			}
 		}
 		
+		
 		System.out.println("Possible moves:");
+		System.out.println(moves.size());
 		for(int i=0 ; i<moves.size() ; i++) {
 			moves.get(i).printMove();
 		}
@@ -136,7 +127,39 @@ public class Player {
 				}
 			}
 		}
+		if(m.promoteTo != null) {
+			System.out.println("Proomoting");
+			board.getSquares()[m.toI][m.toJ].removePiece();
+			switch(m.promoteTo) {
+				case King:
+					board.getSquares()[m.toI][m.toJ].setPiece(new King(this.board, true, m.toI, m.toJ));
+					break;
+				case Knight:
+					board.getSquares()[m.toI][m.toJ].setPiece(new Knight(this.board, true, m.toI, m.toJ));
+					break;
+				case Bishop:
+					board.getSquares()[m.toI][m.toJ].setPiece(new Bishop(this.board, true, m.toI, m.toJ));
+					break;
+				default:
+					System.err.println("opps");
+					break;
+			}
+			
+		}
 		
 		mandatoryMoveFound = false;
+	}
+
+
+	
+	
+	
+	public void makeMove() {
+		
+
+		
+
+		
+
 	}
 }

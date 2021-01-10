@@ -15,7 +15,6 @@ public class Game {
 			System.out.println("PLAYER 1");
 			player1.getBoard().printBoard();
 			player1.generateMoves();
-			player1.makeMove();
 			player1.getBoard().printBoard();
 			player2.setBoard(player1.board.flipBoard());
 			
@@ -28,7 +27,6 @@ public class Game {
 			player2.getBoard().printBoard();
 			player2.hasLost();
 			player2.generateMoves();
-			player2.makeMove();
 			player2.getBoard().printBoard();
 			player1.setBoard(player2.board.flipBoard());
 			

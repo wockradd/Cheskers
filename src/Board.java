@@ -28,12 +28,15 @@ public class Board implements Cloneable{
 		//knight and bishop test set, empty, outofbounds, friendly piece, enemy piece moves all tested 
 //		addPiece(1, 3, Piece.Type.Bishop, true);
 //		addPiece(3, 5, Piece.Type.Knight, true);
-//		//addPiece(4, 2, Piece.Type.King, true);
+//		addPiece(7, 7, Piece.Type.King, true);
 //		addPiece(3, 1, Piece.Type.Pawn, false);
 //		addPiece(5, 1, Piece.Type.Pawn, false);
 //		addPiece(5, 3, Piece.Type.Pawn, false);
 //		addPiece(3, 3, Piece.Type.Pawn, false);
-//		addPiece(6, 4, Piece.Type.Pawn, false);
+//		addPiece(5, 2, Piece.Type.Pawn, true);
+//		addPiece(1, 1, Piece.Type.Pawn, true);
+//		addPiece(4, 1, Piece.Type.Pawn, false);
+//		addPiece(6, 1, Piece.Type.Pawn, false);
 		
 		
 		
