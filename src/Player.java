@@ -3,12 +3,12 @@ import java.util.Random;
 
 public class Player {
 	Board board;
-	boolean mandatoryMoveFound;
+	ArrayList<Move> moves;
 	Random r;
 	
 	public Player() {
 		board = new Board(false);
-		mandatoryMoveFound = false;
+		moves =  new ArrayList<Move>();
 		r = new Random();
 	}
 	
@@ -45,13 +45,16 @@ public class Player {
 	
 	public void generateMoves() {
 		ArrayList<Piece> mandatoryCaptures = new ArrayList<Piece>();
-		ArrayList<Move> moves =  new ArrayList<Move>();
+		boolean mandatoryMoveFound = false;
 		
+		//check each piece, if it has moves add these moves to the players move list
+		//also sets the mandatoryMove flag if it finds one
 		for(int j=0 ; j<8 ; j++) {
 			for(int i=0 ; i<8 ; i++) {
 				try {
 					if(board.getSquares()[i][j].getPiece().getMine()) {
 						board.getSquares()[i][j].getPiece().generateMoveList();
+						moves.addAll(board.getSquares()[i][j].getPiece().moves);
 						
 						if(board.getSquares()[i][j].getPiece().mustMove) {
 							for(Move m: board.getSquares()[i][j].getPiece().moves) {
@@ -65,16 +68,6 @@ public class Player {
 			}
 		}
 
-		//add all the possible moves found to the move list
-		for(int j=0 ; j<8 ; j++) {
-			for(int i=0 ; i<8 ; i++) {
-				try {
-					if(board.getSquares()[i][j].getPiece().getMine()) {
-						moves.addAll(board.getSquares()[i][j].getPiece().moves);
-					}
-				}catch(NullPointerException npe) {}
-			}
-		}
 
 		//remove all moves that dont capture pieces if you found a mandatory move
 		if(mandatoryMoveFound) {
@@ -107,6 +100,14 @@ public class Player {
 		for(int i=0 ; i<moves.size() ; i++) {
 			moves.get(i).printMove();
 		}
+
+	}
+
+
+	
+	
+	public void makeMove() {
+		
 		System.out.println("\n\nPicked move:");
 		
 		//pick a random move
@@ -147,19 +148,8 @@ public class Player {
 			
 		}
 		
-		mandatoryMoveFound = false;
-	}
 
-
-	
-	
-	
-	public void makeMove() {
-		
-
-		
-
-		
+		moves.clear();
 
 	}
 }

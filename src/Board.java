@@ -25,50 +25,54 @@ public class Board implements Cloneable{
 
 	//add all the pieces to the board
 	public void setupPieces() {
-		//knight and bishop test set, empty, outofbounds, friendly piece, enemy piece moves all tested 
-//		addPiece(1, 3, Piece.Type.Bishop, true);
-//		addPiece(3, 5, Piece.Type.Knight, true);
-//		addPiece(7, 7, Piece.Type.King, true);
-//		addPiece(3, 1, Piece.Type.Pawn, false);
-//		addPiece(5, 1, Piece.Type.Pawn, false);
-//		addPiece(5, 3, Piece.Type.Pawn, false);
-//		addPiece(3, 3, Piece.Type.Pawn, false);
-//		addPiece(5, 2, Piece.Type.Pawn, true);
-//		addPiece(1, 1, Piece.Type.Pawn, true);
+//		addPiece(3, 4, Piece.Type.King, true);
 //		addPiece(4, 1, Piece.Type.Pawn, false);
 //		addPiece(6, 1, Piece.Type.Pawn, false);
+//		addPiece(2, 3, Piece.Type.Pawn, false);
+//		addPiece(4, 3, Piece.Type.Pawn, false);
+//		addPiece(2, 5, Piece.Type.Pawn, false);
+//		addPiece(4, 5, Piece.Type.Pawn, false);
+//		addPiece(6, 5, Piece.Type.Pawn, false);
+		addPiece(7, 7, Piece.Type.King, true);
+		addPiece(3, 6, Piece.Type.King, true);
+		addPiece(4, 1, Piece.Type.Pawn, false);
+		addPiece(2, 3, Piece.Type.Pawn, false);
+		addPiece(4, 3, Piece.Type.Pawn, false);
+		addPiece(2, 5, Piece.Type.Pawn, false);
+		addPiece(4, 5, Piece.Type.Pawn, false);
+
 		
 		
 		
 		//this players set up
-		addPiece(0, 5, Piece.Type.Pawn, true);
-		addPiece(1, 6, Piece.Type.Pawn, true);
-		addPiece(2, 5, Piece.Type.Pawn, true);
-		addPiece(3, 6, Piece.Type.Pawn, true);
-		addPiece(4, 5, Piece.Type.Pawn, true);
-		addPiece(5, 6, Piece.Type.Pawn, true);
-		addPiece(6, 5, Piece.Type.Pawn, true);
-		addPiece(7, 6, Piece.Type.Pawn, true);
-		addPiece(0, 7, Piece.Type.Bishop, true);
-		addPiece(2, 7, Piece.Type.King, true);
-		addPiece(4, 7, Piece.Type.King, true);
-		addPiece(6, 7, Piece.Type.Knight, true);
-	
-	
-		
-		//other players set up
-		addPiece(0, 1, Piece.Type.Pawn, false);
-		addPiece(1, 2, Piece.Type.Pawn, false);
-		addPiece(2, 1, Piece.Type.Pawn, false);
-		addPiece(3, 2, Piece.Type.Pawn, false);
-		addPiece(4, 1, Piece.Type.Pawn, false);
-		addPiece(5, 2, Piece.Type.Pawn, false);
-		addPiece(6, 1, Piece.Type.Pawn, false);
-		addPiece(7, 2, Piece.Type.Pawn, false);
-		addPiece(7, 0, Piece.Type.Bishop, false);
-		addPiece(5, 0, Piece.Type.King, false);
-		addPiece(3, 0, Piece.Type.King, false);
-		addPiece(1, 0, Piece.Type.Knight, false);
+//		addPiece(0, 5, Piece.Type.Pawn, true);
+//		addPiece(1, 6, Piece.Type.Pawn, true);
+//		addPiece(2, 5, Piece.Type.Pawn, true);
+//		addPiece(3, 6, Piece.Type.Pawn, true);
+//		addPiece(4, 5, Piece.Type.Pawn, true);
+//		addPiece(5, 6, Piece.Type.Pawn, true);
+//		addPiece(6, 5, Piece.Type.Pawn, true);
+//		addPiece(7, 6, Piece.Type.Pawn, true);
+//		addPiece(0, 7, Piece.Type.Bishop, true);
+//		addPiece(2, 7, Piece.Type.King, true);
+//		addPiece(4, 7, Piece.Type.King, true);
+//		addPiece(6, 7, Piece.Type.Knight, true);
+//	
+//	
+//		
+//		//other players set up
+//		addPiece(0, 1, Piece.Type.Pawn, false);
+//		addPiece(1, 2, Piece.Type.Pawn, false);
+//		addPiece(2, 1, Piece.Type.Pawn, false);
+//		addPiece(3, 2, Piece.Type.Pawn, false);
+//		addPiece(4, 1, Piece.Type.Pawn, false);
+//		addPiece(5, 2, Piece.Type.Pawn, false);
+//		addPiece(6, 1, Piece.Type.Pawn, false);
+//		addPiece(7, 2, Piece.Type.Pawn, false);
+//		addPiece(7, 0, Piece.Type.Bishop, false);
+//		addPiece(5, 0, Piece.Type.King, false);
+//		addPiece(3, 0, Piece.Type.King, false);
+//		addPiece(1, 0, Piece.Type.Knight, false);
 	}
 	
 	
@@ -154,7 +158,7 @@ public class Board implements Cloneable{
 			System.out.println();
 		}
 		
-		//print the names and positions of each piece, useful for debugging
+//		//print the names and positions of each piece, useful for debugging
 //		System.out.println();
 //		for(int j=0 ; j<8 ; j++) {
 //			for(int i=0 ; i<8 ; i++) {

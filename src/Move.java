@@ -27,6 +27,10 @@ public class Move {
 		this.taking = taking;
 	}
 	
+	public void addPieces(ArrayList<Piece> ps) {
+		taking.addAll(ps);
+	}
+	
 	
 	public void printMove() {
 		System.out.println(fromI + "," + fromJ + " to " + toI + "," + toJ);
@@ -37,5 +41,16 @@ public class Move {
 			System.out.println("\n");
 		}
 	}
+	
+	@Override
+    public boolean equals(Object object)
+    {
+       Move m = (Move) object;
+       if(m.toI == this.toI && m.toJ == this.toJ && m.fromI == this.fromI && m.fromJ == this.fromJ) {
+    	   return true;
+       }else {
+    	   return false;
+       }
+    }
 
 }

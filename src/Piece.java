@@ -32,4 +32,20 @@ public abstract class Piece {
 	public boolean canMove() {
 		return moves.size() > 0;
 	}
+	
+	@Override
+	public String toString() {
+		switch(this.type) {
+		case King:
+			return "King at " + x + "," + y;
+		case Bishop:
+			return "Bishop at " + x + "," + y;
+		case Knight:
+			return "Knight at " + x + "," + y;
+		case Pawn:
+			return "Pawn at " + x + "," + y;
+		default:
+			return "Piece at " + x + "," + y;
+		}
+	}
 }
