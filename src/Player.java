@@ -1,12 +1,22 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Player {
+	enum Type {Human,Random};
+	Type type;
+	Display display;
 	Board board;
 	ArrayList<Move> moves;
+	boolean black;
 	Random r;
 	
-	public Player() {
+	public Player(Type type, boolean black) {
+		this.black = black;
+		this.type = type;
+		if(this.type == Type.Human) {
+			display = new Display(this.black);
+		}
 		board = new Board(false);
 		moves =  new ArrayList<Move>();
 		r = new Random();
@@ -19,6 +29,10 @@ public class Player {
 	
 	public void setBoard(Board newBoard) {
 		board = newBoard;
+	}
+	
+	public ArrayList<Move> getMoves(){
+		return moves;
 	}
 	
 	
@@ -96,8 +110,8 @@ public class Player {
 		
 		
 		System.out.println("Possible moves:");
-		System.out.println(moves.size());
 		for(int i=0 ; i<moves.size() ; i++) {
+			System.out.println(i);
 			moves.get(i).printMove();
 		}
 
@@ -109,10 +123,11 @@ public class Player {
 	public void makeMove() {
 		
 		System.out.println("\n\nPicked move:");
-		
 		//pick a random move
 		Move m   = moves.get(r.nextInt(moves.size()));
 		m.printMove();
+
+
 
 		//make it
 		board.getSquares()[m.toI][m.toJ].setPiece(board.getSquares()[m.fromI][m.fromJ].getPiece());
@@ -151,5 +166,6 @@ public class Player {
 
 		moves.clear();
 
+	
 	}
 }

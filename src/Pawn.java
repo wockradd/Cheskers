@@ -66,17 +66,17 @@ public class Pawn extends Piece{
 
 		//hoping and capturing
 		if(mustMove) {
-			recursive(x,y);
+			getHops(x,y);
 			finalisePaths();
 		}
 	}
 	
 	
-	public void recursive(int initialX, int initialY) {
+	public void getHops(int initialX, int initialY) {
 		try {
 			if(!b.getSquares()[initialX-1][initialY-1].getPiece().getMine() && b.getSquares()[initialX-2][initialY-2].getEmpty()) {
 				hops.add(new Move(initialX, initialY, initialX-2, initialY-2, new ArrayList<Piece>(Arrays.asList(b.getSquares()[initialX-1][initialY-1].getPiece()))));
-				recursive(initialX-2, initialY-2);
+				getHops(initialX-2, initialY-2);
 			}
 		}catch(ArrayIndexOutOfBoundsException aioobe) {}
 		catch(NullPointerException npe) {}
@@ -84,7 +84,7 @@ public class Pawn extends Piece{
 		try {
 			if(!b.getSquares()[initialX+1][initialY-1].getPiece().getMine() && b.getSquares()[initialX+2][initialY-2].getEmpty()) {
 				hops.add(new Move(initialX, initialY, initialX+2, initialY-2, new ArrayList<Piece>(Arrays.asList(b.getSquares()[initialX+1][initialY-1].getPiece()))));
-				recursive(initialX+2, initialY-2);
+				getHops(initialX+2, initialY-2);
 			}
 		}catch(ArrayIndexOutOfBoundsException aioobe) {}
 		catch(NullPointerException npe) {}
