@@ -164,4 +164,11 @@ public class Board implements Cloneable{
 //		}
 		System.out.println();
 	}
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+
+	    return super.clone();
+	}
+
 }

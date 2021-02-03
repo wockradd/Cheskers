@@ -56,7 +56,7 @@ public class Player {
 	
 	
 	
-	
+	//populates this.moves with all the possible moves
 	public void generateMoves() {
 		ArrayList<Piece> mandatoryCaptures = new ArrayList<Piece>();
 		boolean mandatoryMoveFound = false;
@@ -116,56 +116,71 @@ public class Player {
 		}
 
 	}
-
-
 	
 	
-	public void makeMove() {
-		
-		System.out.println("\n\nPicked move:");
-		//pick a random move
-		Move m   = moves.get(r.nextInt(moves.size()));
+	public Move pickMove() {
+		Move m = moves.get(r.nextInt(moves.size()));
+		System.out.println("picked move: \n");
 		m.printMove();
+		return m;
+	}
 
 
-
-		//make it
-		board.getSquares()[m.toI][m.toJ].setPiece(board.getSquares()[m.fromI][m.fromJ].getPiece());
-		board.getSquares()[m.fromI][m.fromJ].removePiece();
-		if(m.taking != null) {
-			for(int j=0 ; j<8 ; j++) {
-				for(int i=0 ; i<8 ; i++) {
-					try {
-						if(m.taking.contains(board.getSquares()[i][j].getPiece())) {
-							board.getSquares()[i][j].removePiece();
-						}
-					}catch(NullPointerException npe) {}
+	
+	
+	public Board makeMove(Move m) {
+		
+		
+		try {
+			Board newBoard = (Board)this.board.clone();
+			
+			//move the piece to its new position
+			newBoard.getSquares()[m.toI][m.toJ].setPiece(newBoard.getSquares()[m.fromI][m.fromJ].getPiece());
+			newBoard.getSquares()[m.fromI][m.fromJ].removePiece();
+			
+			//remove any pieces the move got rid of
+			if(m.taking != null) {
+				for(int j=0 ; j<8 ; j++) {
+					for(int i=0 ; i<8 ; i++) {
+						try {
+							if(m.taking.contains(newBoard.getSquares()[i][j].getPiece())) {
+								newBoard.getSquares()[i][j].removePiece();
+							}
+						}catch(NullPointerException npe) {}
+					}
 				}
 			}
-		}
-		if(m.promoteTo != null) {
-			System.out.println("Proomoting");
-			board.getSquares()[m.toI][m.toJ].removePiece();
-			switch(m.promoteTo) {
-				case King:
-					board.getSquares()[m.toI][m.toJ].setPiece(new King(this.board, true, m.toI, m.toJ));
-					break;
-				case Knight:
-					board.getSquares()[m.toI][m.toJ].setPiece(new Knight(this.board, true, m.toI, m.toJ));
-					break;
-				case Bishop:
-					board.getSquares()[m.toI][m.toJ].setPiece(new Bishop(this.board, true, m.toI, m.toJ));
-					break;
-				default:
-					System.err.println("opps");
-					break;
+			
+			//promote any pieces the move promoted
+			if(m.promoteTo != null) {
+				System.out.println("Promoting");
+				newBoard.getSquares()[m.toI][m.toJ].removePiece();
+				switch(m.promoteTo) {
+					case King:
+						newBoard.getSquares()[m.toI][m.toJ].setPiece(new King(newBoard, true, m.toI, m.toJ));
+						break;
+					case Knight:
+						board.getSquares()[m.toI][m.toJ].setPiece(new Knight(newBoard, true, m.toI, m.toJ));
+						break;
+					case Bishop:
+						board.getSquares()[m.toI][m.toJ].setPiece(new Bishop(newBoard, true, m.toI, m.toJ));
+						break;
+					default:
+						System.err.println("opps");
+						break;
+				}
+				
 			}
 			
-		}
-		
 
-		moves.clear();
-
-	
+			moves.clear();
+			
+			return newBoard;
+			
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}	
 	}
 }
