@@ -41,21 +41,13 @@ public class Game {
 			
 			
 			//work out moves and if you're human send the moves and board to the display
-			currentPlayer.generateMoves();
+			currentPlayer.setMoves(currentPlayer.generateMoves(currentPlayer.getBoard()));
+			
 			if(currentPlayer.type == Player.Type.Human) {
 				currentPlayer.display.setBoard(currentPlayer.getBoard());
 				currentPlayer.display.setMoves(currentPlayer.getMoves());
 			}
 			
-			//TODO start of minimax stuff
-			ArrayList<Board> allBoards = currentPlayer.getAllPossibleBoards();
-			
-			System.out.println("All boards");
-			for(Board b:allBoards) {
-				System.out.println(b.evaluateBoard());
-				b.printBoard();
-			}
-
 			
 			//wait until i hit enter to make the move
 			try {
@@ -65,10 +57,10 @@ public class Game {
 			}
 			
 			//pick a move
-			Move m = currentPlayer.pickMove();
+			Move m = currentPlayer.pickMove(currentPlayer.getBoard(),currentPlayer.getMoves());
 			
 			//update the board based on this move and the display if you're human
-			currentPlayer.setBoard(currentPlayer.makeMove(m));
+			currentPlayer.setBoard(currentPlayer.makeMove(m,currentPlayer.getBoard()));
 			if(currentPlayer.type == Player.Type.Human) {
 				currentPlayer.display.setBoard(currentPlayer.getBoard());
 			}

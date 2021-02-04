@@ -1,11 +1,21 @@
 
 public class Board{
 	private Square[][] squares;
+	private float score;
 	
 	public Board(boolean empty) {
 		squares = new Square[8][8];
+		score = 0.0f;
 		initSquares();
 		if(!empty)	setupPieces();
+	}
+	
+	public void setScore(float newScore) {
+		score = newScore;
+	}
+	
+	public float getScore() {
+		return score;
 	}
 	
 
@@ -25,49 +35,49 @@ public class Board{
 
 	//add all the pieces to the board
 	public void setupPieces() {
-		addPiece(7, 7, Piece.Type.King, true);
-		addPiece(0, 0, Piece.Type.King, false);
-		addPiece(4, 1, Piece.Type.Knight, true);
-		addPiece(6, 1, Piece.Type.Knight, false);
-		addPiece(2, 3, Piece.Type.Bishop, true);
-		addPiece(3, 2, Piece.Type.Bishop, false);
-		addPiece(2, 5, Piece.Type.Knight, true);
-		addPiece(4, 5, Piece.Type.Knight, false);
-		addPiece(6, 5, Piece.Type.Bishop, true);
+//		addPiece(7, 7, Piece.Type.King, true);
+//		addPiece(0, 0, Piece.Type.King, false);
+//		addPiece(4, 1, Piece.Type.Knight, true);
+//		addPiece(6, 1, Piece.Type.Knight, false);
+//		addPiece(2, 3, Piece.Type.Bishop, true);
+//		addPiece(3, 2, Piece.Type.Bishop, false);
+//		addPiece(2, 5, Piece.Type.Knight, true);
+//		addPiece(4, 5, Piece.Type.Knight, false);
+//		addPiece(6, 5, Piece.Type.Bishop, true);
 
 
 		
 		
 		
-//		//this players set up
-//		addPiece(0, 5, Piece.Type.Pawn, true);
-//		addPiece(1, 6, Piece.Type.Pawn, true);
-//		addPiece(2, 5, Piece.Type.Pawn, true);
-//		addPiece(3, 6, Piece.Type.Pawn, true);
-//		addPiece(4, 5, Piece.Type.Pawn, true);
-//		addPiece(5, 6, Piece.Type.Pawn, true);
-//		addPiece(6, 5, Piece.Type.Pawn, true);
-//		addPiece(7, 6, Piece.Type.Pawn, true);
-//		addPiece(0, 7, Piece.Type.Bishop, true);
-//		addPiece(2, 7, Piece.Type.King, true);
-//		addPiece(4, 7, Piece.Type.King, true);
-//		addPiece(6, 7, Piece.Type.Knight, true);
-//	
-//	
-//		
-//		//other players set up
-//		addPiece(0, 1, Piece.Type.Pawn, false);
-//		addPiece(1, 2, Piece.Type.Pawn, false);
-//		addPiece(2, 1, Piece.Type.Pawn, false);
-//		addPiece(3, 2, Piece.Type.Pawn, false);
-//		addPiece(4, 1, Piece.Type.Pawn, false);
-//		addPiece(5, 2, Piece.Type.Pawn, false);
-//		addPiece(6, 1, Piece.Type.Pawn, false);
-//		addPiece(7, 2, Piece.Type.Pawn, false);
-//		addPiece(7, 0, Piece.Type.Bishop, false);
-//		addPiece(5, 0, Piece.Type.King, false);
-//		addPiece(3, 0, Piece.Type.King, false);
-//		addPiece(1, 0, Piece.Type.Knight, false);
+		//this players set up
+		addPiece(0, 5, Piece.Type.Pawn, true);
+		addPiece(1, 6, Piece.Type.Pawn, true);
+		addPiece(2, 5, Piece.Type.Pawn, true);
+		addPiece(3, 6, Piece.Type.Pawn, true);
+		addPiece(4, 5, Piece.Type.Pawn, true);
+		addPiece(5, 6, Piece.Type.Pawn, true);
+		addPiece(6, 5, Piece.Type.Pawn, true);
+		addPiece(7, 6, Piece.Type.Pawn, true);
+		addPiece(0, 7, Piece.Type.Bishop, true);
+		addPiece(2, 7, Piece.Type.King, true);
+		addPiece(4, 7, Piece.Type.King, true);
+		addPiece(6, 7, Piece.Type.Knight, true);
+	
+	
+		
+		//other players set up
+		addPiece(0, 1, Piece.Type.Pawn, false);
+		addPiece(1, 2, Piece.Type.Pawn, false);
+		addPiece(2, 1, Piece.Type.Pawn, false);
+		addPiece(3, 2, Piece.Type.Pawn, false);
+		addPiece(4, 1, Piece.Type.Pawn, false);
+		addPiece(5, 2, Piece.Type.Pawn, false);
+		addPiece(6, 1, Piece.Type.Pawn, false);
+		addPiece(7, 2, Piece.Type.Pawn, false);
+		addPiece(7, 0, Piece.Type.Bishop, false);
+		addPiece(5, 0, Piece.Type.King, false);
+		addPiece(3, 0, Piece.Type.King, false);
+		addPiece(1, 0, Piece.Type.Knight, false);
 	}
 	
 	
@@ -106,6 +116,7 @@ public class Board{
 				}
 			}
 		}
+		flippedBoard.score = -score;
 		return flippedBoard;
 	}
 	
@@ -119,12 +130,16 @@ public class Board{
 				}
 			}
 		}
+		newBoard.score = score;
 		return newBoard;
 	}
 	
+	
+
+	
 	public float evaluateBoard() {
 		float score = 0;
-		
+
 		for(int j=0 ; j<8 ; j++) {
 			for(int i=0 ; i<8 ; i++) {
 				if(!squares[i][j].getEmpty()) {
@@ -136,10 +151,10 @@ public class Board{
 					}
 				}
 			}
-			}
+		}
 		return score;
 	}
-	
+
 	
 	
 	//so we have some form of ui
