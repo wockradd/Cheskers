@@ -6,8 +6,9 @@ public class Player {
 	enum Type {Human,Random};
 	Type type;
 	Display display;
-	Board board;
+	private Board board;
 	ArrayList<Move> moves;
+	ArrayList<Board> allBoards;
 	boolean black;
 	Random r;
 	
@@ -19,6 +20,7 @@ public class Player {
 		}
 		board = new Board(false);
 		moves =  new ArrayList<Move>();
+		allBoards = new ArrayList<Board>();
 		r = new Random();
 	}
 	
@@ -58,6 +60,8 @@ public class Player {
 	
 	//populates this.moves with all the possible moves
 	public void generateMoves() {
+		moves.clear();
+		
 		ArrayList<Piece> mandatoryCaptures = new ArrayList<Piece>();
 		boolean mandatoryMoveFound = false;
 		
@@ -119,7 +123,26 @@ public class Player {
 	
 	
 	public Move pickMove() {
-		Move m = moves.get(r.nextInt(moves.size()));
+		//MINIMAX PICK
+		float best = allBoards.get(0).evaluateBoard();
+		int indexOfBest = 0;
+		
+		for(int i=1 ; i<allBoards.size() ; i++) {
+			float currentEval = allBoards.get(i).evaluateBoard();
+			if(currentEval > best) {
+				best = currentEval;
+				indexOfBest = i;
+			}
+		}
+		Move m = moves.get(indexOfBest);
+		
+		
+		//RANDOM PICK
+		//Move m = moves.get(r.nextInt(moves.size()));
+		
+		
+		
+		
 		System.out.println("picked move: \n");
 		m.printMove();
 		return m;
@@ -130,57 +153,60 @@ public class Player {
 	
 	public Board makeMove(Move m) {
 		
-		
-		try {
-			Board newBoard = (Board)this.board.clone();
-			
-			//move the piece to its new position
-			newBoard.getSquares()[m.toI][m.toJ].setPiece(newBoard.getSquares()[m.fromI][m.fromJ].getPiece());
-			newBoard.getSquares()[m.fromI][m.fromJ].removePiece();
-			
-			//remove any pieces the move got rid of
-			if(m.taking != null) {
-				for(int j=0 ; j<8 ; j++) {
-					for(int i=0 ; i<8 ; i++) {
-						try {
-							if(m.taking.contains(newBoard.getSquares()[i][j].getPiece())) {
-								newBoard.getSquares()[i][j].removePiece();
-							}
-						}catch(NullPointerException npe) {}
-					}
-				}
-			}
-			
-			//promote any pieces the move promoted
-			if(m.promoteTo != null) {
-				System.out.println("Promoting");
-				newBoard.getSquares()[m.toI][m.toJ].removePiece();
-				switch(m.promoteTo) {
-					case King:
-						newBoard.getSquares()[m.toI][m.toJ].setPiece(new King(newBoard, true, m.toI, m.toJ));
-						break;
-					case Knight:
-						board.getSquares()[m.toI][m.toJ].setPiece(new Knight(newBoard, true, m.toI, m.toJ));
-						break;
-					case Bishop:
-						board.getSquares()[m.toI][m.toJ].setPiece(new Bishop(newBoard, true, m.toI, m.toJ));
-						break;
-					default:
-						System.err.println("opps");
-						break;
-				}
-				
-			}
-			
+		//create a copy of the current board 
+		//we then edit this copy instead of the global board
+		Board newBoard = board.copyBoard();
 
-			moves.clear();
-			
-			return newBoard;
-			
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}	
+		//remove any pieces the move got rid of
+		if(m.taking != null) {
+			for(int j=0 ; j<8 ; j++) {
+				for(int i=0 ; i<8 ; i++) {
+					try {
+						if(m.taking.contains(board.getSquares()[i][j].getPiece())) {
+							newBoard.getSquares()[i][j].removePiece();
+						}
+					}catch(NullPointerException npe) {}
+				}
+			}
+		}
+
+		//move the piece to its new position
+		newBoard.getSquares()[m.toI][m.toJ].setPiece(newBoard.getSquares()[m.fromI][m.fromJ].getPiece());
+		newBoard.getSquares()[m.fromI][m.fromJ].removePiece();
+
+		
+
+		//promote any pieces the move promoted
+		if(m.promoteTo != null) {
+			System.out.println("Promoting");
+			newBoard.getSquares()[m.toI][m.toJ].removePiece();
+			switch(m.promoteTo) {
+			case King:
+				newBoard.getSquares()[m.toI][m.toJ].setPiece(new King(newBoard, true, m.toI, m.toJ));
+				break;
+			case Knight:
+				newBoard.getSquares()[m.toI][m.toJ].setPiece(new Knight(newBoard, true, m.toI, m.toJ));
+				break;
+			case Bishop:
+				newBoard.getSquares()[m.toI][m.toJ].setPiece(new Bishop(newBoard, true, m.toI, m.toJ));
+				break;
+			default:
+				System.err.println("opps");
+				break;
+			}
+		}
+
+		return newBoard;
+
+
+	}
+
+
+	public ArrayList<Board> getAllPossibleBoards(){
+		allBoards.clear();
+				for(Move m:moves) {
+					allBoards.add(makeMove(m));
+				}
+		return allBoards;
 	}
 }

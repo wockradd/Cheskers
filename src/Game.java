@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Game {
 	
@@ -46,12 +47,20 @@ public class Game {
 				currentPlayer.display.setMoves(currentPlayer.getMoves());
 			}
 			
+			//TODO start of minimax stuff
+			ArrayList<Board> allBoards = currentPlayer.getAllPossibleBoards();
+			
+			System.out.println("All boards");
+			for(Board b:allBoards) {
+				System.out.println(b.evaluateBoard());
+				b.printBoard();
+			}
+
 			
 			//wait until i hit enter to make the move
 			try {
 				System.in.read();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -59,7 +68,7 @@ public class Game {
 			Move m = currentPlayer.pickMove();
 			
 			//update the board based on this move and the display if you're human
-			currentPlayer.board = currentPlayer.makeMove(m);
+			currentPlayer.setBoard(currentPlayer.makeMove(m));
 			if(currentPlayer.type == Player.Type.Human) {
 				currentPlayer.display.setBoard(currentPlayer.getBoard());
 			}
@@ -69,7 +78,7 @@ public class Game {
 			
 			
 			//set the next players board to the new updated board
-			nextPlayer.setBoard(currentPlayer.board.flipBoard());
+			nextPlayer.setBoard(currentPlayer.getBoard().flipBoard());
 			
 			
 			//swap players

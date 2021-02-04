@@ -7,6 +7,7 @@ public class Pawn extends Piece{
 
 	public Pawn(Board b, boolean mine, int x, int y) {
 		super(b, mine, x, y);
+		value = 1;
 		type = Piece.Type.Pawn;
 		hops = new ArrayList<Move>(); 
 	}

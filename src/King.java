@@ -7,6 +7,7 @@ public class King extends Piece{
 
 	public King(Board b, boolean mine, int x, int y) {
 		super(b, mine, x, y);
+		value = 5;
 		type = Piece.Type.King;
 		hops = new ArrayList<Move>(); 
 	}

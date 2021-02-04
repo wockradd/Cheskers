@@ -9,6 +9,7 @@ public class Knight extends Piece{
 
 	public Knight(Board b, boolean mine, int x, int y) {
 		super(b, mine, x, y);
+		value = 3;
 		type = Piece.Type.Knight;
 	}
 

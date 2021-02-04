@@ -7,6 +7,7 @@ public abstract class Piece {
 	protected Board b;
 	protected boolean mine;
 	protected int x, y;
+	protected int value;
 	protected ArrayList<Move> moves;
 	protected boolean  mustMove;
 	

@@ -1,5 +1,5 @@
 
-public class Board implements Cloneable{
+public class Board{
 	private Square[][] squares;
 	
 	public Board(boolean empty) {
@@ -25,48 +25,49 @@ public class Board implements Cloneable{
 
 	//add all the pieces to the board
 	public void setupPieces() {
-		//addPiece(3, 4, Piece.Type.King, true);
-		//addPiece(4, 1, Piece.Type.Pawn, false);
-		//addPiece(6, 1, Piece.Type.Pawn, false);
-		//addPiece(2, 3, Piece.Type.Pawn, false);
-		//addPiece(4, 3, Piece.Type.Pawn, false);
-		//addPiece(2, 5, Piece.Type.Pawn, false);
-		//addPiece(4, 5, Piece.Type.Pawn, false);
-		//addPiece(6, 5, Piece.Type.Pawn, false);
+		addPiece(7, 7, Piece.Type.King, true);
+		addPiece(0, 0, Piece.Type.King, false);
+		addPiece(4, 1, Piece.Type.Knight, true);
+		addPiece(6, 1, Piece.Type.Knight, false);
+		addPiece(2, 3, Piece.Type.Bishop, true);
+		addPiece(3, 2, Piece.Type.Bishop, false);
+		addPiece(2, 5, Piece.Type.Knight, true);
+		addPiece(4, 5, Piece.Type.Knight, false);
+		addPiece(6, 5, Piece.Type.Bishop, true);
 
 
 		
 		
 		
-		//this players set up
-		addPiece(0, 5, Piece.Type.Pawn, true);
-		addPiece(1, 6, Piece.Type.Pawn, true);
-		addPiece(2, 5, Piece.Type.Pawn, true);
-		addPiece(3, 6, Piece.Type.Pawn, true);
-		addPiece(4, 5, Piece.Type.Pawn, true);
-		addPiece(5, 6, Piece.Type.Pawn, true);
-		addPiece(6, 5, Piece.Type.Pawn, true);
-		addPiece(7, 6, Piece.Type.Pawn, true);
-		addPiece(0, 7, Piece.Type.Bishop, true);
-		addPiece(2, 7, Piece.Type.King, true);
-		addPiece(4, 7, Piece.Type.King, true);
-		addPiece(6, 7, Piece.Type.Knight, true);
-	
-	
-		
-		//other players set up
-		addPiece(0, 1, Piece.Type.Pawn, false);
-		addPiece(1, 2, Piece.Type.Pawn, false);
-		addPiece(2, 1, Piece.Type.Pawn, false);
-		addPiece(3, 2, Piece.Type.Pawn, false);
-		addPiece(4, 1, Piece.Type.Pawn, false);
-		addPiece(5, 2, Piece.Type.Pawn, false);
-		addPiece(6, 1, Piece.Type.Pawn, false);
-		addPiece(7, 2, Piece.Type.Pawn, false);
-		addPiece(7, 0, Piece.Type.Bishop, false);
-		addPiece(5, 0, Piece.Type.King, false);
-		addPiece(3, 0, Piece.Type.King, false);
-		addPiece(1, 0, Piece.Type.Knight, false);
+//		//this players set up
+//		addPiece(0, 5, Piece.Type.Pawn, true);
+//		addPiece(1, 6, Piece.Type.Pawn, true);
+//		addPiece(2, 5, Piece.Type.Pawn, true);
+//		addPiece(3, 6, Piece.Type.Pawn, true);
+//		addPiece(4, 5, Piece.Type.Pawn, true);
+//		addPiece(5, 6, Piece.Type.Pawn, true);
+//		addPiece(6, 5, Piece.Type.Pawn, true);
+//		addPiece(7, 6, Piece.Type.Pawn, true);
+//		addPiece(0, 7, Piece.Type.Bishop, true);
+//		addPiece(2, 7, Piece.Type.King, true);
+//		addPiece(4, 7, Piece.Type.King, true);
+//		addPiece(6, 7, Piece.Type.Knight, true);
+//	
+//	
+//		
+//		//other players set up
+//		addPiece(0, 1, Piece.Type.Pawn, false);
+//		addPiece(1, 2, Piece.Type.Pawn, false);
+//		addPiece(2, 1, Piece.Type.Pawn, false);
+//		addPiece(3, 2, Piece.Type.Pawn, false);
+//		addPiece(4, 1, Piece.Type.Pawn, false);
+//		addPiece(5, 2, Piece.Type.Pawn, false);
+//		addPiece(6, 1, Piece.Type.Pawn, false);
+//		addPiece(7, 2, Piece.Type.Pawn, false);
+//		addPiece(7, 0, Piece.Type.Bishop, false);
+//		addPiece(5, 0, Piece.Type.King, false);
+//		addPiece(3, 0, Piece.Type.King, false);
+//		addPiece(1, 0, Piece.Type.Knight, false);
 	}
 	
 	
@@ -106,6 +107,37 @@ public class Board implements Cloneable{
 			}
 		}
 		return flippedBoard;
+	}
+	
+	public Board copyBoard() {
+		Board newBoard = new Board(true);
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				if(!squares[i][j].getEmpty()) {
+					Piece p = squares[i][j].getPiece();
+					newBoard.addPiece(i, j, p.type, p.getMine());  
+				}
+			}
+		}
+		return newBoard;
+	}
+	
+	public float evaluateBoard() {
+		float score = 0;
+		
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				if(!squares[i][j].getEmpty()) {
+					Piece p = squares[i][j].getPiece();
+					if(p.getMine()) {
+						score += p.value;
+					}else {
+						score -= p.value;
+					}
+				}
+			}
+			}
+		return score;
 	}
 	
 	
@@ -165,10 +197,5 @@ public class Board implements Cloneable{
 		System.out.println();
 	}
 	
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-
-	    return super.clone();
-	}
 
 }
