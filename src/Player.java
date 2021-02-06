@@ -3,7 +3,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Player {
-	enum Type {Human,Random};
+	private static final int MINIMAX_DEPTH = 0;
+	
+	enum Type {Human,Random,Minimax};
 	Type type;
 	Display display;
 	private Board board;
@@ -125,7 +127,8 @@ public class Player {
 		}
 		
 		
-		System.out.println("Possible moves:");
+		System.out.println("Possible moves for the board:");
+		board.printBoard();
 		for(int i=0 ; i<moves.size() ; i++) {
 			System.out.println(i);
 			moves.get(i).printMove();
@@ -138,40 +141,91 @@ public class Player {
 	/** give me a board and list of moves, i pick my favorite move
 	 */
 	public Move pickMove(Board board, ArrayList<Move> allMoves) {
-		//MINIMAX PICK
+		Move m = null;
+		
+		if(type ==  Type.Human) {
+			m = allMoves.get(r.nextInt(allMoves.size()));
+			
+			
+		}
+		if(type == Type.Minimax) {
+			//MINIMAX
+			//get all the possible boards
+			ArrayList<Board> allBoards = getAllPossibleBoards(board,allMoves);
+			
+			//do the actual calculations
+			for(Board b:allBoards) {
+				b.setScore(minimax(6, b,false));
+			}
+			
+			//print hat you found
+			for(Board b:allBoards) {
+				System.out.println(b.getScore());
+				b.printBoard();
+			}
+			
+			
+			//allBoards now contains the scores for the 
+			
+			//find the oar
+			float best = allBoards.get(0).getScore();
+			int indexOfBest = 0;
+			for(int i=1 ; i<allBoards.size() ; i++) {
+				float currentEval = allBoards.get(i).getScore();
+				if(currentEval > best) {
+					best = currentEval;
+					indexOfBest = i;
+				}
+			}
+			
+			//pick the move that leads to this board
+			m = allMoves.get(indexOfBest);
+	
+		}
 		
 		
-		
-//		ArrayList<Board> allBoards = getAllPossibleBoards(board,allMoves);
-//		float best = allBoards.get(0).evaluateBoard();
-//		int indexOfBest = 0;
-//		
-//		for(int i=1 ; i<allBoards.size() ; i++) {
-//			float currentEval = allBoards.get(i).evaluateBoard();
-//			if(currentEval > best) {
-//				best = currentEval;
-//				indexOfBest = i;
-//			}
-//		}
-//		Move m = allMoves.get(indexOfBest);
-		
-		
-		//RANDOM PICK
-		Move m = allMoves.get(r.nextInt(allMoves.size()));
-		
-		
-		
-		
-		System.out.println("picked move: \n");
-		m.printMove();
 		return m;
 	}
 	
 	
 	
-	
-	public void minimax() {
+	/**recursive alg that returns the minimax score for the given board
+	 */
+	//adapted from the code here https://gamedev.stackexchange.com/questions/31166/how-to-utilize-minimax-algorithm-in-checkers-game
+	public float minimax(int depth, Board currentBoard, boolean max) {
+		System.out.println("depth: " + depth);
+		//base case
+		if(depth == 0) {
+			return currentBoard.evaluateBoard();
+		}else {//step case
+			Board flipped = currentBoard.flipBoard();
+			ArrayList<Board> allBoards = getAllPossibleBoards(flipped, generateMoves(flipped));
+			//used to store the best score we find
+			
+			float score = 0;
+			if(max) {
+				score = -Float.MAX_VALUE;
+			}else {
+				score = Float.MAX_VALUE;
+			}
+			
+			for(Board b:allBoards) {
+				float newScore = minimax(depth-1, b,!max);
+				
+				if(max) {
+					if(newScore > score) {
+						score = newScore;
+					}
+				}else {
+					if(newScore < score) {
+						score = newScore;
+					}
+				}
+			    
+			}
 		
+			return score;
+		}
 	}
 	
 	
@@ -222,8 +276,6 @@ public class Player {
 				break;
 			}
 		}
-		
-		newBoard.setScore(newBoard.evaluateBoard());
 
 		return newBoard;
 

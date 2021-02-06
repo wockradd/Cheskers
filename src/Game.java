@@ -7,7 +7,7 @@ public class Game {
 	public static void main(String[] args) {
 		//initialise the players
 		Player player1 = new Player(Player.Type.Human, true);
-		Player player2 = new Player(Player.Type.Random,false);
+		Player player2 = new Player(Player.Type.Minimax,false);
 		
 		Player currentPlayer = player1; 
 		Player nextPlayer = player2;
@@ -50,11 +50,11 @@ public class Game {
 			
 			
 			//wait until i hit enter to make the move
-			try {
-				System.in.read();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				System.in.read();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 			
 			//pick a move
 			Move m = currentPlayer.pickMove(currentPlayer.getBoard(),currentPlayer.getMoves());

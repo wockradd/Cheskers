@@ -35,15 +35,12 @@ public class Board{
 
 	//add all the pieces to the board
 	public void setupPieces() {
-//		addPiece(7, 7, Piece.Type.King, true);
-//		addPiece(0, 0, Piece.Type.King, false);
-//		addPiece(4, 1, Piece.Type.Knight, true);
-//		addPiece(6, 1, Piece.Type.Knight, false);
-//		addPiece(2, 3, Piece.Type.Bishop, true);
-//		addPiece(3, 2, Piece.Type.Bishop, false);
-//		addPiece(2, 5, Piece.Type.Knight, true);
-//		addPiece(4, 5, Piece.Type.Knight, false);
-//		addPiece(6, 5, Piece.Type.Bishop, true);
+		//addPiece(7, 7, Piece.Type.King, true);
+		//addPiece(0, 0, Piece.Type.King, false);
+		//addPiece(2, 5, Piece.Type.Pawn, false);
+		//addPiece(5, 2, Piece.Type.Knight, true);
+		//addPiece(3, 4, Piece.Type.Pawn, false);
+		
 
 
 		
