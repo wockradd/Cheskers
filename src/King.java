@@ -7,7 +7,17 @@ public class King extends Piece{
 
 	public King(Board b, boolean mine, int x, int y) {
 		super(b, mine, x, y);
-		value = 5;
+		value = 8;
+		valueMatrix = new float[][]{
+			{5,5,5,5,5,5,5,5},
+			{3,3,3,3,3,3,3,3},
+			{4,4,4,4,4,4,4,4},
+			{5,5,5,5,5,5,5,5},
+			{5,5,5,5,5,5,5,5},
+			{8,8,8,8,8,8,8,8},
+			{9,9,9,9,9,9,9,9},
+			{9,9,9,9,9,9,9,9}
+			};
 		type = Piece.Type.King;
 		hops = new ArrayList<Move>(); 
 	}

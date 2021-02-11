@@ -7,7 +7,8 @@ public abstract class Piece {
 	protected Board b;
 	protected boolean mine;
 	protected int x, y;
-	protected int value;
+	protected float value;
+	protected float[][] valueMatrix;
 	protected ArrayList<Move> moves;
 	protected boolean  mustMove;
 	
@@ -20,6 +21,7 @@ public abstract class Piece {
 		this.y = j;
 		moves = new ArrayList<Move>();
 		mustMove = false;
+		
 	}
 	
 	public ArrayList<Move> getMoveList() {

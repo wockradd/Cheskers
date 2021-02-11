@@ -131,7 +131,23 @@ public class Board{
 		return newBoard;
 	}
 	
-	
+	public float evaluateBoardBetter() {
+		float score = 0;
+
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				if(!squares[i][j].getEmpty()) {
+					Piece p = squares[i][j].getPiece();
+					if(p.getMine()) {
+						score += p.valueMatrix[i][j];
+					}else {
+						score -= p.valueMatrix[i][j];
+					}
+				}
+			}
+		}
+		return score;
+	}
 
 	
 	public float evaluateBoard() {

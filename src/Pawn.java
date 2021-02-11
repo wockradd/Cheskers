@@ -8,6 +8,16 @@ public class Pawn extends Piece{
 	public Pawn(Board b, boolean mine, int x, int y) {
 		super(b, mine, x, y);
 		value = 1;
+		valueMatrix = new float[][]{
+			{2,2,2,2,2,2,2,2},
+			{1.8f,1.8f,1.8f,1.8f,1.8f,1.8f,1.8f,1.8f},
+			{1.6f,1.6f,1.6f,1.6f,1.6f,1.6f,1.6f,1.6f},
+			{1.4f,1.4f,1.4f,1.4f,1.4f,1.4f,1.4f,1.4f},
+			{1.2f,1.2f,1.2f,1.2f,1.2f,1.2f,1.2f,1.2f},
+			{1,1,1,1,1,1,1,1},
+			{1,1,1,1,1,1,1,1},
+			{1,1,1,1,1,1,1,1}
+			};
 		type = Piece.Type.Pawn;
 		hops = new ArrayList<Move>(); 
 	}

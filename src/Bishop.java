@@ -6,6 +6,16 @@ public class Bishop extends Piece{
 	public Bishop(Board b, boolean mine, int x, int y) {
 		super(b, mine, x, y);
 		value = 3;
+		valueMatrix = new float[][]{
+			{-2,-1,-1,-1,-1,-1,-1,-2},
+			{-1,0,0,0,0,0,0,-1},
+			{-1,0,1,2,2,1,0,-1},
+			{-1,1,2,3,3,2,1,-1},
+			{-1,1,2,3,3,2,1,-1},
+			{-1,0,1,2,2,1,0,-1},
+			{-1,0,0,0,0,0,0,-1},
+			{-2,-1,-1,-1,-1,-1,-1,-2}
+			};
 		type = Piece.Type.Bishop;
 	}
 
