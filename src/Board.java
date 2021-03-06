@@ -35,11 +35,10 @@ public class Board{
 
 	//add all the pieces to the board
 	public void setupPieces() {
-		//addPiece(7, 7, Piece.Type.King, true);
-		//addPiece(0, 0, Piece.Type.King, false);
-		//addPiece(2, 5, Piece.Type.Pawn, false);
-		//addPiece(5, 2, Piece.Type.Knight, true);
-		//addPiece(3, 4, Piece.Type.Pawn, false);
+//		addPiece(7, 7, Piece.Type.King, true);
+//		addPiece(0, 0, Piece.Type.King, false);
+//		addPiece(2, 5, Piece.Type.Pawn, false);
+//		addPiece(5, 2, Piece.Type.Knight, true);
 		
 
 
@@ -223,6 +222,127 @@ public class Board{
 //			}
 //		}
 		System.out.println();
+	}
+	
+	
+	
+	
+	
+	public String printBoardForNN() {
+		String s = "";
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				try{
+					if(squares[i][j].getPiece().type == Piece.Type.Pawn && squares[i][j].getPiece().getMine()) {
+						s+= "1";
+					}else {
+						s+= "0";
+					}
+				}catch(NullPointerException npe) {
+					s+= "0";
+				}
+				
+			}
+		}
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				try{
+					if(squares[i][j].getPiece().type == Piece.Type.Knight && squares[i][j].getPiece().getMine()) {
+						s+= "1";
+					}else {
+						s+= "0";
+					}
+				}catch(NullPointerException npe) {
+					s+= "0";
+				}
+				
+			}
+		}
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				try{
+					if(squares[i][j].getPiece().type == Piece.Type.Bishop && squares[i][j].getPiece().getMine()) {
+						s+= "1";
+					}else {
+						s+= "0";
+					}
+				}catch(NullPointerException npe) {
+					s+= "0";
+				}
+				
+			}
+		}
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				try{
+					if(squares[i][j].getPiece().type == Piece.Type.King && squares[i][j].getPiece().getMine()) {
+						s+= "1";
+					}else {
+						s+= "0";
+					}
+				}catch(NullPointerException npe) {
+					s+= "0";
+				}
+				
+			}
+		}
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				try{
+					if(squares[i][j].getPiece().type == Piece.Type.Pawn && !squares[i][j].getPiece().getMine()) {
+						s+= "1";
+					}else {
+						s+= "0";
+					}
+				}catch(NullPointerException npe) {
+					s+= "0";
+				}
+				
+			}
+		}
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				try{
+					if(squares[i][j].getPiece().type == Piece.Type.Knight && !squares[i][j].getPiece().getMine()) {
+						s+= "1";
+					}else {
+						s+= "0";
+					}
+				}catch(NullPointerException npe) {
+					s+= "0";
+				}
+				
+			}
+		}
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				try{
+					if(squares[i][j].getPiece().type == Piece.Type.Bishop && !squares[i][j].getPiece().getMine()) {
+						s+= "1";
+					}else {
+						s+= "0";
+					}
+				}catch(NullPointerException npe) {
+					s+= "0";
+				}
+				
+			}
+		}
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				try{
+					if(squares[i][j].getPiece().type == Piece.Type.King && !squares[i][j].getPiece().getMine()) {
+						s+= "1";
+					}else {
+						s+= "0";
+					}
+				}catch(NullPointerException npe) {
+					s+= "0";
+				}
+				
+			}
+		}
+		return s;
 	}
 	
 

@@ -1,9 +1,12 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class Display {
+	//display stuff
 	private boolean black;
 	private Board board;
 	private ArrayList<Move> moves;
@@ -14,6 +17,9 @@ public class Display {
 	private JFrame frame;
 	private JPanel panel;
 	private JButton [][] chessBoardButtons;
+	
+	//logic stuff
+	public int fromButton=-1,toButton=-1;
 
 	public Display(boolean black) {
 		this.black = black;
@@ -23,6 +29,22 @@ public class Display {
 	
 	public void setMoves(ArrayList<Move> moves) {
 		this.moves = moves;
+		
+		//update display
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				if((i+j)%2 == 0) {
+					chessBoardButtons[i][j].setBackground(Color.WHITE);
+				}else {
+					chessBoardButtons[i][j].setBackground(Color.LIGHT_GRAY);
+				}
+				for(Move m: moves) {
+					if(m.fromI == i && m.fromJ ==j) {
+						chessBoardButtons[i][j].setBackground(Color.DARK_GRAY);
+					}
+				}
+			}
+		}
 	}
 	
 	public void setBoard(Board board) {
@@ -99,6 +121,52 @@ public class Display {
 		for(int j=0  ;j<8 ; j++) {
 			for(int i=0 ; i<8 ; i++) {
 				chessBoardButtons[i][j] = new JButton();
+				chessBoardButtons[i][j].addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						JButton clicked = (JButton)arg0.getSource();
+						
+						if(clicked.getBackground() == Color.DARK_GRAY) {
+							//figure out which button was clicked
+							int clickedI=-1,clickedJ=-1;
+							for(int j=0  ;j<8 ; j++) {
+								for(int i=0 ; i<8 ; i++) {
+									if(chessBoardButtons[i][j] == arg0.getSource()) {
+										clickedI = i;
+										clickedJ=j;
+									}
+								}
+							}
+							
+							//havent picked a peice yet
+							if(fromButton == -1) {
+								fromButton = clickedI + (8*clickedJ);
+								
+								//update display to show where you can move this piece
+								for(int j=0  ;j<8 ; j++) {
+									for(int i=0 ; i<8 ; i++) {
+										if((i+j)%2 == 0) {
+											chessBoardButtons[i][j].setBackground(Color.WHITE);
+										}else {
+											chessBoardButtons[i][j].setBackground(Color.LIGHT_GRAY);
+										}
+										for(Move m: moves) {
+											if(m.toI == i && m.toJ ==j && m.fromI+(m.fromJ*8) == fromButton) {
+												chessBoardButtons[i][j].setBackground(Color.DARK_GRAY);
+											}
+										}
+									}
+								}
+							//now im picking where to move it
+							}else {
+								toButton = clickedI + (8*clickedJ);
+							}
+						}
+						
+						
+					}
+				});
 				//chessBoardSquares[i][j].setEnabled(false);
 				if((i+j)%2 == 0) {
 					chessBoardButtons[i][j].setBackground(Color.WHITE);
