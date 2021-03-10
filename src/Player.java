@@ -177,16 +177,13 @@ public class Player {
 			}else if(type == Type.MM4) {
 				board.setScore(minimax(6,6, board,true,true,-Float.MAX_VALUE, Float.MAX_VALUE));
 			}
-			//System.out.println(scoredBoards.size());
-			//System.out.println(allMoves.size());
+			
 			
 			float best = -Float.MAX_VALUE;
 			int indexOfBest = 0;
 			
 			//we have all the boards scored, just gotta find the best
 			for(int i=0  ;i<scoredBoards.size() ; i++) {
-				scoredBoards.get(i).printBoard();
-				System.out.println(scoredBoards.get(i).getScore());
 				//update best score index
 				if(scoredBoards.get(i).getScore() > best) {
 					best = scoredBoards.get(i).getScore();
@@ -199,22 +196,22 @@ public class Player {
 				}
 			}
 			
+			Board bestBoard = scoredBoards.get(indexOfBest);
 			
 			
-			System.out.println("picked " + indexOfBest);
-			//pick the move that leads to this board
-			m = allMoves.get(indexOfBest);
-
-		
-			
-			
-			
-	
-	
+			//now we've got the best board, find which move lead to this board
+			for(Move move: allMoves) {
+				
+				Board b = makeMove(move, board).flipBoard();
+				if(b.equals(bestBoard)) {
+					m = move;
+					break;
+				}
+			}
 		}
 
 		long endTime = System.nanoTime();
-		System.out.println("Time: "+(endTime-startTime)/1000000 + "ms");
+		//System.out.println("Time: "+(endTime-startTime)/1000000 + "ms");
 		
 		return m;
 	}

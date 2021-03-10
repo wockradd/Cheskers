@@ -112,7 +112,7 @@ public class Board{
 				}
 			}
 		}
-		flippedBoard.score = -score;
+		//flippedBoard.score = -score;
 		return flippedBoard;
 	}
 	
@@ -345,5 +345,26 @@ public class Board{
 		return s;
 	}
 	
+	
+	@Override
+	public boolean equals(Object o) {
+		Board b = (Board)o;
+		
+		for(int j=0 ; j<8 ; j++) {
+			for(int i=0 ; i<8 ; i++) {
+				//theres a piece on one board that isnt on the other
+				if(b.squares[i][j].getPiece() == null && this.squares[i][j].getPiece() != null) {
+					return false;
+				}
+				try {
+					//theres two different pieces on the same squares
+					if(b.squares[i][j].getPiece().type != this.squares[i][j].getPiece().type || b.squares[i][j].getPiece().mine != this.squares[i][j].getPiece().mine) {
+						return false;
+					}
+				}catch(NullPointerException npe) {}
+			}
+		}
+		return true;
+	}
 
 }
