@@ -1,4 +1,7 @@
 bin
 games.txt
-tests.txt
 Untitled.jar
+.ipynb_checkpoints/
+data/
+target/
+

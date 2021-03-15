@@ -1,11 +1,25 @@
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import org.deeplearning4j.nn.api.Layer;
+import org.deeplearning4j.nn.api.OptimizationAlgorithm;
+import org.deeplearning4j.nn.conf.layers.DenseLayer;
+import org.deeplearning4j.nn.conf.layers.LossLayer;
+import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
+import org.deeplearning4j.nn.modelimport.keras.exceptions.InvalidKerasConfigurationException;
+import org.deeplearning4j.nn.modelimport.keras.exceptions.UnsupportedKerasConfigurationException;
+import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.nd4j.linalg.activations.Activation;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
+import org.nd4j.linalg.lossfunctions.LossFunctions;
+import java.io.File;
+import java.io.IOException;
 
 public class Player {
 	private static final int MINIMAX_DEPTH = 0;
 	
-	enum Type {Human,Random,MM1,MM2,MM3,MM4,MM5};
+	enum Type {Human,Random,MM1,MM2,MM3,MM4,MM5,NN};
 	Type type;
 	Display display;
 	private Board board;
@@ -14,6 +28,7 @@ public class Player {
 	Random r;
 	Scanner s;
 	public ArrayList<Board> scoredBoards = new ArrayList<Board>();
+	MultiLayerNetwork toModel,fromModel,promoteModel;
 	
 	
 	public Player(Type type, boolean black) {
@@ -26,6 +41,20 @@ public class Player {
 		moves =  new ArrayList<Move>();
 		r = new Random();
 		s = new Scanner(System.in);
+		
+		if(this.type == Type.NN) {
+			final String toModelPath = new File("src/resources/toModel.h5").getAbsolutePath();
+			final String fromModelPath = new File("src/resources/fromModel.h5").getAbsolutePath();
+			final String promoteModelPath = new File("src/resources/promoteModel.h5").getAbsolutePath();
+			try {
+				toModel = KerasModelImport.importKerasSequentialModelAndWeights(toModelPath, true);
+				fromModel = KerasModelImport.importKerasSequentialModelAndWeights(fromModelPath, true);
+				promoteModel = KerasModelImport.importKerasSequentialModelAndWeights(promoteModelPath, true);
+			} catch (IOException | InvalidKerasConfigurationException | UnsupportedKerasConfigurationException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 	/** getter
@@ -52,9 +81,23 @@ public class Player {
 		moves = newMoves;
 	}
 	
+	//converts a string bitboard into an indarray for the nns
+	public INDArray StringToINDArray(String s) {
+		char[] chars = s.toCharArray();
+		if(chars.length != 512) {
+			System.err.println("somethings wrong");
+			return null;
+		}
+		float[][] result = new float[1][512];
+		for(int i=0  ;i<chars.length ; i++) {
+			result[0][i] = Character.getNumericValue(chars[i]);
+		}
+		return Nd4j.createFromArray(result);
+	}
 	
 	
-	//TODO update this to handle stalemates too
+	
+
 	/** return true if the player has no kings left
 	 */
 	public boolean hasLost() {
@@ -168,6 +211,7 @@ public class Player {
 		}else if(type == Type.MM1 || type == Type.MM2 || type == Type.MM3 || type == Type.MM4) {
 			scoredBoards.clear();
 			
+			//do the minimaxing
 			if(type == Type.MM1) {
 				board.setScore(minimax(4, 4,board,true,false,-Float.MAX_VALUE, Float.MAX_VALUE));
 			}else if(type == Type.MM2) {
@@ -208,6 +252,20 @@ public class Player {
 					break;
 				}
 			}
+		}else if(type == Type.NN) {
+			//TODO
+			//give board to toModel and fromModel
+			//create a float array the same size as allMoves
+			//find the from and to scores at the index specified
+			//each moves score is from+to
+			//find the best score in the float array, this is the index of the best move
+			//other stuff for promotions
+//			INDArray test = StringToINDArray("00000000000000000000000000000000000000001010101001010101000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000001010000000000010101010010101010000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000001010000000000000000000000000000000000000000000000000000000000");
+//			INDArray output = toModel.output(test);
+//			
+//			for(int i=0  ; i<64 ; i++) {
+//				System.out.println(output.getFloat(0,i));
+//			}
 		}
 
 		long endTime = System.nanoTime();

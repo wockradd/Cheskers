@@ -10,8 +10,6 @@ import java.util.Scanner;
 
 
 
-
-
 public class Game {
 	
 	static Player player1;//black, goes first in cheskers
@@ -21,8 +19,8 @@ public class Game {
 
 	public static void main(String[] args) {
 		//initialise the players
-		//initPlayers();
-		initPlayersForTraining();
+		initPlayers();
+		//initPlayersForTraining();
 		
 		Player currentPlayer = player1; 
 		Player nextPlayer = player2;
@@ -219,7 +217,7 @@ public class Game {
 	public static void initPlayers(){
 		System.out.println("MM1 - MM4 are minimax AIs using different depths and evaluation functions, higher the number the better the AI");
 		
-		System.out.println("Black player:\n1.Random\n2.Human\n3.MM1\n4.MM2\n5.MM3\n6.MM4\n");
+		System.out.println("Black player:\n1.Random\n2.Human\n3.MM1\n4.MM2\n5.MM3\n6.MM4\n7.NN");
 		int in = s.nextInt();
 		Player.Type p1Type=null, p2Type=null;
 		switch(in) {
@@ -242,9 +240,12 @@ public class Game {
 			case 6:
 				p1Type = Player.Type.MM4;
 				break;
+			case 7:
+				p1Type = Player.Type.NN;
+				break;
 		}
 		
-		System.out.println("White player:\n1.Random\n2.Human\n3.MM1\n4.MM2\n5.MM3\n6.MM4\n");
+		System.out.println("White player:\n1.Random\n2.Human\n3.MM1\n4.MM2\n5.MM3\n6.MM4\n7.NN");
 		in = s.nextInt();
 		switch(in) {
 			case 1:
@@ -264,6 +265,9 @@ public class Game {
 				break;
 			case 6:
 				p2Type = Player.Type.MM4;
+				break;
+			case 7:
+				p2Type = Player.Type.NN;
 				break;
 		}
 		
