@@ -123,7 +123,7 @@ public class Game {
 			
 			//print the new board to file
 			try {
-				fw.write(currentPlayer.getBoard().printBoardForNN() + "," + (m.fromI+(m.fromJ*8)) +"," + (m.toI+(m.toJ*8)));
+				fw.write(currentPlayer.getBoard().stringBoardForNN() + "," + (m.fromI+(m.fromJ*8)) +"," + (m.toI+(m.toJ*8)));
 				try {
 					switch(m.promoteTo) {
 					case Knight:

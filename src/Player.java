@@ -252,20 +252,53 @@ public class Player {
 					break;
 				}
 			}
+			
+			
 		}else if(type == Type.NN) {
 			//TODO
-			//give board to toModel and fromModel
-			//create a float array the same size as allMoves
-			//find the from and to scores at the index specified
-			//each moves score is from+to
-			//find the best score in the float array, this is the index of the best move
-			//other stuff for promotions
-//			INDArray test = StringToINDArray("00000000000000000000000000000000000000001010101001010101000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000001010000000000010101010010101010000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000001010000000000000000000000000000000000000000000000000000000000");
-//			INDArray output = toModel.output(test);
-//			
-//			for(int i=0  ; i<64 ; i++) {
-//				System.out.println(output.getFloat(0,i));
-//			}
+			//currently this ignores promoting
+			
+			//get the board into the format the nn can take
+			INDArray input = StringToINDArray(board.stringBoardForNN());
+			
+			//get the nn results
+			INDArray toResult = toModel.output(input);
+			INDArray fromResult = fromModel.output(input);
+			
+			//this array will store the score for each move based on the nn results
+			float[] scores = new float[allMoves.size()]; 
+			
+			//fills in the scores array
+			for(int i=0 ; i<allMoves.size() ; i++) {
+				//get the to and from positions
+				int toIndex = allMoves.get(i).toI + (allMoves.get(i).toJ*8);
+				int fromIndex = allMoves.get(i).fromI + (allMoves.get(i).fromJ*8);
+				
+				//get the scores
+				float toScore = toResult.getFloat(0,toIndex);
+				float fromScore = fromResult.getFloat(0,fromIndex);
+				
+				//save the score
+				scores[i] = toScore + fromScore;
+			}
+			
+			
+			//we have all the scores, now find the index of the best move
+			float best = -Float.MAX_VALUE;
+			int indexOfBest = 0;
+			
+			for(int i=0  ;i<scores.length ; i++) {
+				System.out.println(i + ": "  +scores[i]);
+				//update best score index
+				if(scores[i] > best) {
+					best = scores[i];
+					indexOfBest = i;
+				}
+			}
+			System.out.println("picked move " + indexOfBest);
+			
+			//final move
+			m = allMoves.get(indexOfBest);
 		}
 
 		long endTime = System.nanoTime();

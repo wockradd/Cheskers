@@ -11,3 +11,5 @@ The king cant do multiple hops, this kept causing bugs. Having the king only mov
 The board display gets buggy if you have two humans playing against each other
 
 
+
+
