@@ -1,9 +1,6 @@
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -21,6 +18,7 @@ public class Game {
 		//initialise the players
 		initPlayers();
 		//initPlayersForTraining();
+
 		
 		Player currentPlayer = player1; 
 		Player nextPlayer = player2;
@@ -32,7 +30,7 @@ public class Game {
 		int turn = 1;
 		
 		try {
-			fw = new FileWriter("games.txt",true);
+			fw = new FileWriter("moves.txt",true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -42,22 +40,6 @@ public class Game {
 		//main game loop
 		while(true) {
 			
-			//check if the game is going on forever
-			if(turn >= 200) {
-				System.out.println("looping");
-				break;
-			}
-			
-			//win condition check
-			if(currentPlayer.hasLost()) {
-				if(currentPlayer.black) {
-					System.out.println("white wins");
-				}else {
-					System.out.println("black wins");
-				}
-				break;
-			}
-			
 			//print info to terminal
 //			System.out.println("\n\n\n\n\n\n\n\nTurn num: " + turn);
 //			if(currentPlayer.black) {
@@ -65,13 +47,52 @@ public class Game {
 //			}else {
 //				System.out.println("Whites turn");
 //			}
-//			currentPlayer.getBoard().printBoard();
+			
+			//check if the game is going on forever
+			if(turn >= 200) {
+				System.out.println("looping");
+				Board blackBoard = player1.getBoard().copyBoard();
+				Board whiteBoard = player2.getBoard().copyBoard();
+				
+				float blackScore = blackBoard.evaluateBoard();
+				float whiteScore = whiteBoard.evaluateBoard();
+				
+				if(blackScore > whiteScore) {
+					System.out.println("Black is up material");
+				}else if(blackScore == whiteScore) {
+					System.out.println("Tied on material");
+				}else {
+					System.out.println("White is up material");
+				}
+				
+				break;
+			}
+			
+			
+			//win condition check
+			if(currentPlayer.hasLost()) {
+				if(currentPlayer.black) {
+					System.out.println("White wins");
+				}else {
+					System.out.println("Black wins");
+				}
+				break;
+			}
+			
+			//print info to terminal
+			//currentPlayer.getBoard().printBoard();
 			
 			
 			
 			
 			//work out possible moves
 			currentPlayer.setMoves(currentPlayer.generateMoves(currentPlayer.getBoard()));
+			
+//			//info to terminal
+//			for(Move m: currentPlayer.getMoves()) {
+//				m.printMove();
+//			}
+			
 			
 			//if you're human send the moves and board to the display
 			if(currentPlayer.type == Player.Type.Human) {
@@ -83,9 +104,9 @@ public class Game {
 			//check for stalemate
 			if(currentPlayer.getMoves().isEmpty()) {
 				if(currentPlayer.black) {
-					System.out.println("white wins");
+					System.out.println("w");
 				}else {
-					System.out.println("black wins");
+					System.out.println("b");
 				}
 				break;
 			}
@@ -122,108 +143,133 @@ public class Game {
 			}
 			
 			//print the new board to file
-			try {
-				fw.write(currentPlayer.getBoard().stringBoardForNN() + "," + (m.fromI+(m.fromJ*8)) +"," + (m.toI+(m.toJ*8)));
+			if(currentPlayer.getRecordMoves()) {
 				try {
-					switch(m.promoteTo) {
-					case Knight:
-						fw.write(",1\n");
-						break;
-					case Bishop:
-						fw.write(",2\n");
-						break;
-					case King:
-						fw.write(",3\n");
-						break;
+					fw.write(currentPlayer.getBoard().stringBoardForNN() + "," + (m.fromI+(m.fromJ*8)) +"," + (m.toI+(m.toJ*8)));
+					try {
+						switch(m.promoteTo) {
+						case Knight:
+							fw.write(",0\n");
+							break;
+						case Bishop:
+							fw.write(",1\n");
+							break;
+						case King:
+							fw.write(",2\n");
+							break;
+						default:
+							System.err.println("you're trying to promote a pawn to a pawn?");
+							break;
+						}
+					}catch(NullPointerException npe) {
+						fw.write(",x\n");
 					}
-				}catch(NullPointerException npe) {
-					fw.write(",0\n");
+
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-			
-			
-			//print what move was picked and the board this created
+
+
+			//info to terminal
+//			System.out.println("picked move:");
 //			m.printMove();
-//			currentPlayer.getBoard().printBoard();
-			
-			
+
+
 			//set the next players board to the new updated board
 			nextPlayer.setBoard(currentPlayer.getBoard().flipBoard());
-			
-			
+
+
 			//swap players
 			temp = currentPlayer;
 			currentPlayer = nextPlayer;
 			nextPlayer = temp;
-			
+
 			turn++;
 		}
-		
+
 		try {
 			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	//used for training, sets the players as random minimax ais
 	public static void initPlayersForTraining() {
-		int p1 = r.nextInt(4);
-		int p2 = r.nextInt(4);
+		int p1 = r.nextInt(6);
+		int p2 = r.nextInt(6);
+		
+		//set black player type
 		switch(p1) {
-			case 0:
-				System.out.println("black is mm1");
-				player1 = new Player(Player.Type.MM1, true);
-				break;
-			case 1:
-				System.out.println("black is mm2");
-				player1 = new Player(Player.Type.MM2, true);
-				break;
-			case 2:
-				System.out.println("black is mm3");
-				player1 = new Player(Player.Type.MM3, true);
-				break;
-			case 3:
-				System.out.println("black is mm4");
-				player1 = new Player(Player.Type.MM4, true);
-				break;
+		case 0:
+			System.out.println("b1");
+			player1 = new Player(Player.Type.MM1, true);
+			break;
+		case 1:
+			System.out.println("b2");
+			player1 = new Player(Player.Type.MM2, true);
+			break;
+		case 2:
+			System.out.println("b3");
+			player1 = new Player(Player.Type.MM3, true);
+			break;
+		case 3:
+			System.out.println("b4");
+			player1 = new Player(Player.Type.MM4, true);
+			break;
+		case 4:
+			System.out.println("b5");
+			player1 = new Player(Player.Type.MM5, true);
+			break;
+		case 5:
+			System.out.println("b6");
+			player1 = new Player(Player.Type.MM6, true);
+			break;
 		}
+		
+		//set white player type
 		switch(p2) {
 		case 0:
-			System.out.println("white is mm1");
+			System.out.println("w1");
 			player2 = new Player(Player.Type.MM1, false);
 			break;
 		case 1:
-			System.out.println("white is mm2");
+			System.out.println("w2");
 			player2 = new Player(Player.Type.MM2, false);
 			break;
 		case 2:
-			System.out.println("white is mm3");
+			System.out.println("w3");
 			player2 = new Player(Player.Type.MM3, false);
 			break;
 		case 3:
-			System.out.println("white is mm4");
+			System.out.println("w4");
 			player2 = new Player(Player.Type.MM4, false);
 			break;
+		case 4:
+			System.out.println("w5");
+			player2 = new Player(Player.Type.MM5, false);
+			break;
+		case 5:
+			System.out.println("w6");
+			player2 = new Player(Player.Type.MM6, false);
+			break;
+		}
 	}
-	}
-	
-	
+
+
 	//get user input to pick which player is using which ai
 	public static void initPlayers(){
 		System.out.println("MM1 - MM4 are minimax AIs using different depths and evaluation functions, higher the number the better the AI");
-		
-		System.out.println("Black player:\n1.Random\n2.Human\n3.MM1\n4.MM2\n5.MM3\n6.MM4\n7.NN");
-		int in = s.nextInt();
 		Player.Type p1Type=null, p2Type=null;
+		
+		//set black player type
+		System.out.println("Black player:\n1.Random\n2.Human\n3.MM1\n4.MM2\n5.MM3\n6.MM4\n7.MM5\n8.MM6\n9.NN1\n10.NN2");
+		int in = s.nextInt();
 		switch(in) {
 			case 1:
 				p1Type = Player.Type.Random;
-				
 				break;
 			case 2:
 				p1Type = Player.Type.Human;
@@ -241,11 +287,21 @@ public class Game {
 				p1Type = Player.Type.MM4;
 				break;
 			case 7:
-				p1Type = Player.Type.NN;
+				p1Type = Player.Type.MM5;
+				break;
+			case 8:
+				p1Type = Player.Type.MM6;
+				break;
+			case 9:
+				p1Type = Player.Type.NN1;
+				break;
+			case 10:
+				p1Type = Player.Type.NN2;
 				break;
 		}
 		
-		System.out.println("White player:\n1.Random\n2.Human\n3.MM1\n4.MM2\n5.MM3\n6.MM4\n7.NN");
+		//set white player type
+		System.out.println("White player:\n1.Random\n2.Human\n3.MM1\n4.MM2\n5.MM3\n6.MM4\n7.MM5\n8.MM6\n9.NN1\n10.NN2");
 		in = s.nextInt();
 		switch(in) {
 			case 1:
@@ -267,7 +323,16 @@ public class Game {
 				p2Type = Player.Type.MM4;
 				break;
 			case 7:
-				p2Type = Player.Type.NN;
+				p2Type = Player.Type.MM5;
+				break;
+			case 8:
+				p2Type = Player.Type.MM6;
+				break;
+			case 9:
+				p2Type = Player.Type.NN1;
+				break;
+			case 10:
+				p2Type = Player.Type.NN2;
 				break;
 		}
 		

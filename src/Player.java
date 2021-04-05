@@ -1,25 +1,19 @@
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-import org.deeplearning4j.nn.api.Layer;
-import org.deeplearning4j.nn.api.OptimizationAlgorithm;
-import org.deeplearning4j.nn.conf.layers.DenseLayer;
-import org.deeplearning4j.nn.conf.layers.LossLayer;
+import java.io.File;
+import java.io.IOException;
 import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
 import org.deeplearning4j.nn.modelimport.keras.exceptions.InvalidKerasConfigurationException;
 import org.deeplearning4j.nn.modelimport.keras.exceptions.UnsupportedKerasConfigurationException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
-import org.nd4j.linalg.lossfunctions.LossFunctions;
-import java.io.File;
-import java.io.IOException;
+
 
 public class Player {
-	private static final int MINIMAX_DEPTH = 0;
 	
-	enum Type {Human,Random,MM1,MM2,MM3,MM4,MM5,NN};
+	enum Type {Human,Random,MM1,MM2,MM3,MM4,MM5,MM6,NN1,NN2};
 	Type type;
 	Display display;
 	private Board board;
@@ -29,9 +23,11 @@ public class Player {
 	Scanner s;
 	public ArrayList<Board> scoredBoards = new ArrayList<Board>();
 	MultiLayerNetwork toModel,fromModel,promoteModel;
+	private boolean recordMoves;
 	
 	
 	public Player(Type type, boolean black) {
+		//init stuff
 		this.black = black;
 		this.type = type;
 		if(this.type == Type.Human) {
@@ -41,11 +37,27 @@ public class Player {
 		moves =  new ArrayList<Move>();
 		r = new Random();
 		s = new Scanner(System.in);
+		recordMoves = true;
 		
-		if(this.type == Type.NN) {
-			final String toModelPath = new File("src/resources/toModel.h5").getAbsolutePath();
-			final String fromModelPath = new File("src/resources/fromModel.h5").getAbsolutePath();
-			final String promoteModelPath = new File("src/resources/promoteModel.h5").getAbsolutePath();
+		
+		//set up nns
+		if(this.type == Type.NN1) {
+			final String toModelPath = new File("src/resources/toModelv1.h5").getAbsolutePath();
+			final String fromModelPath = new File("src/resources/fromModelv1.h5").getAbsolutePath();
+			final String promoteModelPath = new File("src/resources/promoteModelv1.h5").getAbsolutePath();
+			try {
+				toModel = KerasModelImport.importKerasSequentialModelAndWeights(toModelPath, true);
+				fromModel = KerasModelImport.importKerasSequentialModelAndWeights(fromModelPath, true);
+				promoteModel = KerasModelImport.importKerasSequentialModelAndWeights(promoteModelPath, true);
+			} catch (IOException | InvalidKerasConfigurationException | UnsupportedKerasConfigurationException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(this.type == Type.NN2) {
+			final String toModelPath = new File("src/resources/toModelv2.h5").getAbsolutePath();
+			final String fromModelPath = new File("src/resources/fromModelv2.h5").getAbsolutePath();
+			final String promoteModelPath = new File("src/resources/promoteModelv2.h5").getAbsolutePath();
 			try {
 				toModel = KerasModelImport.importKerasSequentialModelAndWeights(toModelPath, true);
 				fromModel = KerasModelImport.importKerasSequentialModelAndWeights(fromModelPath, true);
@@ -67,6 +79,18 @@ public class Player {
 	 */
 	public void setBoard(Board newBoard) {
 		board = newBoard;
+	}
+	
+	/** getter
+	 */
+	public boolean getRecordMoves() {
+		return recordMoves;
+	}
+	
+	/** setter
+	 */
+	public void setRecordMoves(boolean b) {
+		recordMoves = b;
 	}
 	
 	/** getter
@@ -192,23 +216,23 @@ public class Player {
 		Move m = null;
 		long startTime = System.nanoTime();
 		
+		//human get move
 		if(type ==  Type.Human) {
-			
-			
-			
 
+			//find the move that corresponds with the buttons pressed
 			for(int i=0  ;i<allMoves.size() ; i++) {
 				if(allMoves.get(i).fromI + (allMoves.get(i).fromJ*8) == display.fromButton && allMoves.get(i).toI + (allMoves.get(i).toJ*8) == display.toButton) {
-					
 					m = allMoves.get(i);
 				}
 			}
 
-			
+		
+		//Random get move
 		}else if(type == Type.Random) {
 			m = allMoves.get(r.nextInt(allMoves.size()));
 			
-		}else if(type == Type.MM1 || type == Type.MM2 || type == Type.MM3 || type == Type.MM4) {
+		//MM get move	
+		}else if(type == Type.MM1 || type == Type.MM2 || type == Type.MM3 || type == Type.MM4 || type == Type.MM5 || type == Type.MM6) {
 			scoredBoards.clear();
 			
 			//do the minimaxing
@@ -220,20 +244,24 @@ public class Player {
 				board.setScore(minimax(6,6, board,true,false,-Float.MAX_VALUE, Float.MAX_VALUE));
 			}else if(type == Type.MM4) {
 				board.setScore(minimax(6,6, board,true,true,-Float.MAX_VALUE, Float.MAX_VALUE));
+			}else if(type == Type.MM5) {
+				board.setScore(minimax(8,8, board,true,false,-Float.MAX_VALUE, Float.MAX_VALUE));
+			}else if(type == Type.MM6) {
+				board.setScore(minimax(8,8, board,true,true,-Float.MAX_VALUE, Float.MAX_VALUE));
 			}
 			
 			
+			//we have all the boards scored, just gotta find the best
 			float best = -Float.MAX_VALUE;
 			int indexOfBest = 0;
 			
-			//we have all the boards scored, just gotta find the best
 			for(int i=0  ;i<scoredBoards.size() ; i++) {
 				//update best score index
 				if(scoredBoards.get(i).getScore() > best) {
 					best = scoredBoards.get(i).getScore();
 					indexOfBest = i;
 					
-				//if the scores equal to the best theres a 10% chance this move will be picked instead
+				//if the scores equal to the best theres a 10% chance this move will be picked instead, adds some randomness
 				}else if(scoredBoards.get(i).getScore() == best && r.nextFloat() < 0.1) {
 					best = scoredBoards.get(i).getScore();
 					indexOfBest = i;
@@ -254,9 +282,8 @@ public class Player {
 			}
 			
 			
-		}else if(type == Type.NN) {
-			//TODO
-			//currently this ignores promoting
+		//NN get move	
+		}else if(type == Type.NN1 || type == Type.NN2) {
 			
 			//get the board into the format the nn can take
 			INDArray input = StringToINDArray(board.stringBoardForNN());
@@ -264,6 +291,7 @@ public class Player {
 			//get the nn results
 			INDArray toResult = toModel.output(input);
 			INDArray fromResult = fromModel.output(input);
+			INDArray promoteResult = promoteModel.output(input);
 			
 			//this array will store the score for each move based on the nn results
 			float[] scores = new float[allMoves.size()]; 
@@ -288,14 +316,29 @@ public class Player {
 			int indexOfBest = 0;
 			
 			for(int i=0  ;i<scores.length ; i++) {
-				System.out.println(i + ": "  +scores[i]);
+				//System.out.println(i + ": "  +scores[i]);
+				
 				//update best score index
 				if(scores[i] > best) {
 					best = scores[i];
 					indexOfBest = i;
 				}
 			}
-			System.out.println("picked move " + indexOfBest);
+			
+			//deal with promotion if the best move  only NN2 can do promotion properly
+			if(type == Type.NN2 && allMoves.get(indexOfBest).promoteTo != null) {
+				float bestPromote = -Float.MAX_VALUE;
+				int indexOfBestPromote = 0;
+				
+				for(int i=0 ; i<3 ; i++) {
+					if(promoteResult.getFloat(0,i) > bestPromote) {
+						indexOfBestPromote = i;
+					}
+				}
+				
+				indexOfBest += indexOfBestPromote;
+			}
+			
 			
 			//final move
 			m = allMoves.get(indexOfBest);

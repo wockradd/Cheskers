@@ -159,9 +159,9 @@ public class Pawn extends Piece{
 		//do promotion logic
 		for(Move m:result) {
 			if(m.toJ == 0) {
+				moves.add(new Move(m.fromI,m.fromJ,m.toI,m.toJ,m.taking,Piece.Type.Knight));
 				moves.add(new Move(m.fromI,m.fromJ,m.toI,m.toJ,m.taking,Piece.Type.Bishop));
 				moves.add(new Move(m.fromI,m.fromJ,m.toI,m.toJ,m.taking,Piece.Type.King));
-				moves.add(new Move(m.fromI,m.fromJ,m.toI,m.toJ,m.taking,Piece.Type.Knight));
 			}else {
 				moves.add(m);
 			}
