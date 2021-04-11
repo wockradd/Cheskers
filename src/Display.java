@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+//using iamges from https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
+
 public class Display {
 	//display stuff
 	private boolean black;
