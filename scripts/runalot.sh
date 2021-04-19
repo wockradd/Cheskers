@@ -3,6 +3,6 @@
 counter=1
 while [ $counter -le 1000 ]
 do
-./Untitled.jar
+../Cheskers.jar
 ((counter++))
 done
