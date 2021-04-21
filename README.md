@@ -2,7 +2,9 @@
 
 ## Running
 
-To run the program with different agents just do ./Checkers.jar in a terminal. This jar was uploaded using git lfs so make sure you clone the repo correctly to run it.
+** I couldnt upload the final executable to the honours project system so you'll have to clone the repo at https://github.com/wockradd/Cheskers to get it **
+
+To run the program with different agents run the executable with ./Checkers.jar in a terminal. This jar was uploaded using git lfs so make sure you clone the repo correctly to run it.
 
 A file 'moves.txt' will be generated after running. To quickly collect data use 'runalot.sh' run it multiple times.
 
@@ -17,7 +19,6 @@ Humans also cant pick which piece their pawn is promoted to
 The king cant do multiple hops, this kept causing bugs. Having the king only move one space is more like chess anyway
 
 The board display gets buggy if you have two humans playing against each other
-
 
 
 
