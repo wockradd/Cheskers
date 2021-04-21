@@ -2,9 +2,11 @@
 
 ## Running
 
-To run the program with different agents just do ./Checkers.jar in a terminal.
+To run the program with different agents just do ./Checkers.jar in a terminal. This jar was uploaded using git lfs so make sure you clone the repo correctly to run it.
 
-Unfortunately the jar cant load the images for the GUI for some reason? Only noticed this (somehow) while getting the repo ready for submission. Import into eclipse or compile manually to play against the agents.
+A file 'moves.txt' will be generated after running. To quickly collect data use 'runalot.sh' run it multiple times.
+
+Unfortunately the jar cant load the images for the GUI for some reason? Only noticed this (somehow) while getting the repo ready for submission. Import into eclipse or compile manually to actually play against the agents.
 
 ## Known issues
 
