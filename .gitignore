@@ -1,6 +1,4 @@
 bin
-games.txt
-*.jar
 .ipynb_checkpoints/
 data/
 target/

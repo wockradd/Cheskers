@@ -1,8 +1,13 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 //using iamges from https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
@@ -25,7 +30,12 @@ public class Display {
 
 	public Display(boolean black) {
 		this.black = black;
-		loadImages();
+		try {
+			loadImages();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		initGui();
 	}
 	
@@ -97,7 +107,7 @@ public class Display {
 	
 	
 	
-	public void loadImages() {
+	public void loadImages() throws IOException {	
 		images  = new ImageIcon[2][4];
 		
 		images[0][0] = new ImageIcon(Game.class.getResource("/resources/whitePawn.png"));

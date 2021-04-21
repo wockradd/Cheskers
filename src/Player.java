@@ -343,7 +343,7 @@ public class Player {
 			//final move
 			m = allMoves.get(indexOfBest);
 		}
-
+		
 		long endTime = System.nanoTime();
 		//System.out.println("Time: "+(endTime-startTime)/1000000 + "ms");
 		

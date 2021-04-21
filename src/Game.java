@@ -41,12 +41,12 @@ public class Game {
 		while(true) {
 			
 			//print info to terminal
-//			System.out.println("\n\n\n\n\n\n\n\nTurn num: " + turn);
-//			if(currentPlayer.black) {
-//				System.out.println("Blacks turn");
-//			}else {
-//				System.out.println("Whites turn");
-//			}
+			System.out.println("\nTurn num: " + turn);
+			if(currentPlayer.black) {
+				System.out.println("Blacks turn");
+			}else {
+				System.out.println("Whites turn");
+			}
 			
 			//check if the game is going on forever
 			if(turn >= 200) {
@@ -80,7 +80,7 @@ public class Game {
 			}
 			
 			//print info to terminal
-			//currentPlayer.getBoard().printBoard();
+			currentPlayer.getBoard().printBoard();
 			
 			
 			
@@ -172,8 +172,8 @@ public class Game {
 
 
 			//info to terminal
-//			System.out.println("picked move:");
-//			m.printMove();
+			System.out.println("picked move:");
+			m.printMove();
 
 
 			//set the next players board to the new updated board
@@ -261,33 +261,33 @@ public class Game {
 
 	//get user input to pick which player is using which ai
 	public static void initPlayers(){
-		System.out.println("MM1 - MM4 are minimax AIs using different depths and evaluation functions, higher the number the better the AI");
+		System.out.println("Options 2 to 9 are different AIs, mmSimple2 being the strongest and nn1 the weakest\nPick each players type\n");
 		Player.Type p1Type=null, p2Type=null;
 		
 		//set black player type
-		System.out.println("Black player:\n1.Random\n2.Human\n3.MM1\n4.MM2\n5.MM3\n6.MM4\n7.MM5\n8.MM6\n9.NN1\n10.NN2");
+		System.out.println("Black player:\n1.Human\n2.Random\n3.MMSimple1\n4.MMSimple2\n5.MMSimple3\n6.MMPositional1\n7.MMPositional2\n8.MMPositional3\n9.NN1\n10.NN2");
 		int in = s.nextInt();
 		switch(in) {
 			case 1:
-				p1Type = Player.Type.Random;
+				p1Type = Player.Type.Human;
 				break;
 			case 2:
-				p1Type = Player.Type.Human;
+				p1Type = Player.Type.Random;
 				break;
 			case 3:
 				p1Type = Player.Type.MM1;
 				break;
 			case 4:
-				p1Type = Player.Type.MM2;
-				break;
-			case 5:
 				p1Type = Player.Type.MM3;
 				break;
+			case 5:
+				p1Type = Player.Type.MM5;
+				break;
 			case 6:
-				p1Type = Player.Type.MM4;
+				p1Type = Player.Type.MM2;
 				break;
 			case 7:
-				p1Type = Player.Type.MM5;
+				p1Type = Player.Type.MM4;
 				break;
 			case 8:
 				p1Type = Player.Type.MM6;
@@ -301,29 +301,29 @@ public class Game {
 		}
 		
 		//set white player type
-		System.out.println("White player:\n1.Random\n2.Human\n3.MM1\n4.MM2\n5.MM3\n6.MM4\n7.MM5\n8.MM6\n9.NN1\n10.NN2");
+		System.out.println("White player:\n1.Human\n2.Random\n3.MMSimple1\n4.MMSimple2\n5.MMSimple3\n6.MMPositional1\n7.MMPositional2\n8.MMPositional3\n9.NN1\n10.NN2");
 		in = s.nextInt();
 		switch(in) {
 			case 1:
-				p2Type = Player.Type.Random;
+				p2Type = Player.Type.Human;
 				break;
 			case 2:
-				p2Type = Player.Type.Human;
+				p2Type = Player.Type.Random;
 				break;
 			case 3:
 				p2Type = Player.Type.MM1;
 				break;
 			case 4:
-				p2Type = Player.Type.MM2;
-				break;
-			case 5:
 				p2Type = Player.Type.MM3;
 				break;
+			case 5:
+				p2Type = Player.Type.MM5;
+				break;
 			case 6:
-				p2Type = Player.Type.MM4;
+				p2Type = Player.Type.MM2;
 				break;
 			case 7:
-				p2Type = Player.Type.MM5;
+				p2Type = Player.Type.MM4;
 				break;
 			case 8:
 				p2Type = Player.Type.MM6;
