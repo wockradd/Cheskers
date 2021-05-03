@@ -4,13 +4,15 @@
 
 ** I couldnt upload the final executable to the honours project system so you'll have to clone the repo at https://github.com/wockradd/Cheskers to get it **
 
-To run the program with different agents run the executable with ./Checkers.jar in a terminal. This jar was uploaded using git lfs so make sure you clone the repo correctly to run it.
+To run the program run ./Checkers.jar in a terminal. This jar was uploaded using git lfs so make sure you clone the repo correctly to run it.
 
 A file 'moves.txt' will be generated after running. To quickly collect data use 'runalot.sh' run it multiple times.
 
-Unfortunately the jar cant load the images for the GUI for some reason? Only noticed this (somehow) while getting the repo ready for submission. Import into eclipse or compile manually to actually play against the agents.
+
 
 ## Known issues
+
+The final executable cant load in the icons for the pieces correctly
 
 If there are two or more moves that start and end in the same place human players cant choose which of these moves they take
 

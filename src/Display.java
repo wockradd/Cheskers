@@ -20,6 +20,7 @@ public class Display {
 	
 	private int SIZE = 500;
 	private ImageIcon [][] images;
+	private boolean iconsFailed = false;
 	
 	private JFrame frame;
 	private JPanel panel;
@@ -63,10 +64,12 @@ public class Display {
 		for(int j=0 ; j<8 ; j++) {
 			for(int i=0 ; i<8 ; i++) {
 				chessBoardButtons[i][j].setIcon(null);
+				chessBoardButtons[i][j].setText("");
 			}
 		}
 		this.board = board;
 		int index;
+		
 		for(int j=0 ; j<8 ; j++) {
 			for(int i=0 ; i<8 ; i++) {
 				try {
@@ -83,22 +86,58 @@ public class Display {
 							index = 1;
 						}
 					}
-					
+
 					switch(board.getSquares()[i][j].getPiece().type) {
 					case Pawn:
-						chessBoardButtons[i][j].setIcon(images[index][0]);
+						if(iconsFailed) {
+							if(board.getSquares()[i][j].getPiece().getMine()) {
+								chessBoardButtons[i][j].setText("P");
+							}else {
+								chessBoardButtons[i][j].setText("p");
+							}
+						}else {
+							chessBoardButtons[i][j].setIcon(images[index][0]);
+						}
+
 						break;
 					case Knight:
-						chessBoardButtons[i][j].setIcon(images[index][1]);
+						if(iconsFailed) {
+							if(board.getSquares()[i][j].getPiece().getMine()) {
+								chessBoardButtons[i][j].setText("N");
+							}else {
+								chessBoardButtons[i][j].setText("n");
+							}
+						}else {
+							chessBoardButtons[i][j].setIcon(images[index][1]);
+						}
+
 						break;
 					case Bishop:
-						chessBoardButtons[i][j].setIcon(images[index][2]);
+						if(iconsFailed) {
+							if(board.getSquares()[i][j].getPiece().getMine()) {
+								chessBoardButtons[i][j].setText("B");
+							}else {
+								chessBoardButtons[i][j].setText("b");
+							}
+						}else {
+							chessBoardButtons[i][j].setIcon(images[index][2]);
+						}
+
 						break;
 					case King:
-						chessBoardButtons[i][j].setIcon(images[index][3]);
+						if(iconsFailed) {
+							if(board.getSquares()[i][j].getPiece().getMine()) {
+								chessBoardButtons[i][j].setText("K");
+							}else {
+								chessBoardButtons[i][j].setText("k");
+							}
+						}else {
+							chessBoardButtons[i][j].setIcon(images[index][3]);
+						}
+
 						break;
 					}
-					
+
 				}catch(NullPointerException npe) {}
 			}
 		}
@@ -109,17 +148,21 @@ public class Display {
 	
 	public void loadImages() throws IOException {	
 		images  = new ImageIcon[2][4];
+		try {
+			images[0][0] = new ImageIcon(Game.class.getResource("resources/whitePawn.png"));
+			images[0][1] = new ImageIcon(Game.class.getResource("resources/whiteKnight.png"));
+			images[0][2] = new ImageIcon(Game.class.getResource("resources/whiteBishop.png"));
+			images[0][3] = new ImageIcon(Game.class.getResource("resources/whiteKing.png"));
+			
+			images[1][0] = new ImageIcon(Game.class.getResource("resources/blackPawn.png"));
+			images[1][1] = new ImageIcon(Game.class.getResource("resources/blackKnight.png"));
+			images[1][2] = new ImageIcon(Game.class.getResource("resources/blackBishop.png"));
+			images[1][3] = new ImageIcon(Game.class.getResource("resources/blackKing.png"));
 		
-		images[0][0] = new ImageIcon(Game.class.getResource("/resources/whitePawn.png"));
-		images[0][1] = new ImageIcon(Game.class.getResource("/resources/whiteKnight.png"));
-		images[0][2] = new ImageIcon(Game.class.getResource("/resources/whiteBishop.png"));
-		images[0][3] = new ImageIcon(Game.class.getResource("/resources/whiteKing.png"));
-		
-		images[1][0] = new ImageIcon(Game.class.getResource("/resources/blackPawn.png"));
-		images[1][1] = new ImageIcon(Game.class.getResource("/resources/blackKnight.png"));
-		images[1][2] = new ImageIcon(Game.class.getResource("/resources/blackBishop.png"));
-		images[1][3] = new ImageIcon(Game.class.getResource("/resources/blackKing.png"));
-		
+		}catch(NullPointerException npe) {
+			iconsFailed = true;
+		}
+			
 	}
 	
 
