@@ -42,9 +42,9 @@ public class Player {
 		
 		//set up nns
 		if(this.type == Type.NN1) {
-			final String toModelPath = new File("resources/toModelv1.h5").getAbsolutePath();
-			final String fromModelPath = new File("resources/fromModelv1.h5").getAbsolutePath();
-			final String promoteModelPath = new File("resources/promoteModelv1.h5").getAbsolutePath();
+			final String toModelPath = new File("src/resources/toModelv1.h5").getAbsolutePath();
+			final String fromModelPath = new File("src/resources/fromModelv1.h5").getAbsolutePath();
+			final String promoteModelPath = new File("src/resources/promoteModelv1.h5").getAbsolutePath();
 			try {
 				toModel = KerasModelImport.importKerasSequentialModelAndWeights(toModelPath, true);
 				fromModel = KerasModelImport.importKerasSequentialModelAndWeights(fromModelPath, true);

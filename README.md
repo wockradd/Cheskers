@@ -1,8 +1,10 @@
 # Cheskers project
 
+Presentation about the project [here](youtube video)
+
 ## Running
 
-** I couldnt upload the final executable to the honours project system so you'll have to clone the repo at https://github.com/wockradd/Cheskers to get it **
+**I couldnt upload the final executable to the honours project system so you'll have to clone the repo at https://github.com/wockradd/Cheskers to get it**
 
 To run the program run ./Checkers.jar in a terminal. This jar was uploaded using git lfs so make sure you clone the repo correctly to run it.
 
