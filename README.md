@@ -1,6 +1,6 @@
 # Cheskers project
 
-Presentation about the project [here](youtube video)
+Presentation about the project [here](https://www.youtube.com/watch?v=5zJ1B78ln2M)
 
 ## Running
 
